@@ -1,0 +1,182 @@
+@import "../bootstrap/functions";
+@import "../bootstrap/variables";
+@import "../bootstrap/mixins";
+
+$font-family-logo: 'Questrial', sans-serif;
+$font-family-header: 'Varela Round', sans-serif;
+$font-family-regular: 'Open Sans';
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    min-height: 100vh;
+    font-family: $font-family-regular;
+}
+
+.icons svg {
+    width: 36px;
+    height: 36px;
+}
+
+@media screen {
+    @include media-breakpoint-up(md) {
+        .icon-md-100 {
+            width: 100% !important;
+            height: auto !important;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        body {
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        .h-lg-100 {
+            height: 100%;
+        }
+    }
+}
+
+@each $size, $length in $sizes {
+    .max-vw-#{$size} {
+        max-width: #{$size}vw !important;
+    }
+
+    .min-vw-#{$size} {
+        min-width: #{$size}vw !important;
+    }
+
+    .max-vh-#{$size} {
+        max-height: #{$size}vh !important;
+    }
+
+    .min-vh-#{$size} {
+        min-height: #{$size}vh !important;
+    }
+}
+
+@each $color, $value in $colors {
+    @include text-emphasis-variant(".text-#{$color}", $value, true);
+
+    .bg-#{$color} {
+        background-color: $value;
+    }
+
+    .bg-gradient-#{$color} {
+        background: $value linear-gradient(180deg, $value, darken($value, 10%)) repeat-x !important;
+    }
+
+    .text-#{$color} {
+        color: $value;
+    }
+
+    .icon-#{$color} {
+        --fa-primary-color: #{$value};
+        --fa-secondary-color: #{lighten($value, 20%)};
+    }
+}
+
+.icon-theme {
+    --fa-primary-color: #{$primary};
+    --fa-secondary-color: #{$secondary};
+}
+
+.icon-100 {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.font-size-lg {
+    font-size: $font-size-lg;
+}
+
+.font-size-sm {
+    font-size: $font-size-sm;
+}
+
+.font-size-base {
+    font-size: $font-size-base;
+}
+
+h1, h2, h3 {
+    font-family: $font-family-header;
+}
+
+h1 {
+    color: $primary;
+}
+
+h2, h3 {
+    color: $secondary;
+}
+
+.logo {
+    font-family: $font-family-logo;
+}
+
+.logo > .logo-icon {
+    margin: 0 10px 0 0;
+}
+
+.logo-icon > img {
+    width: 48px;
+    height: 48px;
+}
+
+.feather-twitter {
+    color: #1DA1F2;
+}
+
+.feather-mail {
+    color: #111111;
+}
+
+$shadow-rgba: rgba(#280A96, 0.01);
+
+@mixin box-shadow($shadow...) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+.shadow-above {
+    @include box-shadow(0 -1rem 1rem 0.05rem $shadow-rgba);
+}
+
+.shadow-below {
+    @include box-shadow(0 1rem 1rem 0.05rem $shadow-rgba);
+}
+
+/* FONTS */
+
+/* varela-round-regular - latin */
+@font-face {
+    font-family: 'Varela Round';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Varela Round Regular'), local('VarelaRound-Regular'), url('../fonts/varela-round-v11-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../fonts/varela-round-v11-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* open-sans-regular - latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url('../fonts/open-sans-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../fonts/open-sans-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* questrial-regular - latin */
+@font-face {
+    font-family: 'Questrial';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Questrial'), local('Questrial-Regular'), url('../fonts/questrial-v9-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../fonts/questrial-v9-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
