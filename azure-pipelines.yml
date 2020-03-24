@@ -1,0 +1,46 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  workingDirectory: src
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: '$workingDirectory/**.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Generate
+  inputs:
+    command: 'run'
+    projects: '$workingDirectory/**.csproj'
+    
+- task: ArchiveFiles@2
+  displayName: Zip Site
+  inputs:
+    rootFolderOrFile: '$(Agent.BuildDirectory)/s/src/output' 
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+    replaceExistingArchive: true
+
+- script:  >-
+      curl
+      -H 'Authorization: Bearer $(netlifyPersonalAccessToken)' 
+      -H 'Content-Type: application/zip'
+      --data-binary '@$(Build.BuildId).zip'
+      https://api.netlify.com/api/v1/sites/$(netlifyApiId)/deploys
+  workingDirectory: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Upload to Netlify'
