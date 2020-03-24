@@ -10,7 +10,6 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  workingDirectory: src
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -19,13 +18,13 @@ steps:
   displayName: Build
   inputs:
     command: 'build'
-    projects: '$workingDirectory/**.csproj'
+    projects: 'src/Blog.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Generate
   inputs:
     command: 'run'
-    projects: '$workingDirectory/**.csproj'
+    projects: 'src/Blog.csproj'
     
 - task: ArchiveFiles@2
   displayName: Zip Site
