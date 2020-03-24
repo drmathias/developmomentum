@@ -29,7 +29,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: Zip Site
   inputs:
-    rootFolderOrFile: '$(Agent.BuildDirectory)/s/src/output' 
+    rootFolderOrFile: '$(Agent.BuildDirectory)/s/output' 
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
