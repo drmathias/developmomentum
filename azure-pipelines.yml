@@ -10,6 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  blog: 'src/Blog.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -18,18 +19,17 @@ steps:
   displayName: Build
   inputs:
     command: 'build'
-    projects: 'src/Blog.csproj'
-
+    projects: $blog
 - task: DotNetCoreCLI@2
   displayName: Generate
   inputs:
     command: 'run'
-    projects: 'src/Blog.csproj'
+    projects: $blog
     
 - task: ArchiveFiles@2
   displayName: Zip Site
   inputs:
-    rootFolderOrFile: 'src/output' 
+    rootFolderOrFile: '$(Build.SourcesDirectory)/src/output' 
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
