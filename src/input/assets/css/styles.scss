@@ -115,6 +115,11 @@ h2, h3 {
     color: $secondary;
 }
 
+p img {
+    max-width: 100%;
+    height: auto;
+}
+
 .logo {
     font-family: $font-family-logo;
 }
