@@ -24,8 +24,8 @@ namespace Blog
                         // .And()
                         // .Resize(960, 720).OutputAsJpeg()
                         // .And()
-                        // .Resize(1000, 300).OutputAsJpeg()
-                        // .And()
+                        .Resize(960, 720).OutputAsJpeg()
+                        .And()
                         .Resize(1920 , 1440).OutputAsJpeg()
                     );
                     builder.WithOutputWriteFiles();
