@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: developmomentum.com
+Token: 6cd0b4d7597203f3d6b5f8b84029a49da5b432b42301170ed7d2bebbc9810684
