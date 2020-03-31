@@ -1,10 +1,10 @@
-![Rasperry Pi Web Farm](../assets/images/blog/823A7764-AF7C-4687-A42E-BD70768068AB-w1920-h1440.jpg)
+![Rasperry Pi Web Farm](../assets/images/blog/823a7764-af7c-4687-a42e-bd70768068ab-w1920-h1440.jpg)
 
 ## Components of a web farm
 
 A web farm is a structure where two or more computers run on a network to serve the same web application. Incoming web requests are routed to a load balancer server, which offloads the request to one of the computers on the network serving the web application.
 
-![Web farm structure](../assets/images/blog/content/7B39A2F8-8060-43E7-A439-43F799D3E069.jpg)
+![Web farm structure](../assets/images/blog/content/7b39a2f8-8060-43e7-a439-43f799d3e069.jpg)
 
 The benefit of this approach is that adding more nodes to the network is trivial and therefore the request handling power of the network can be scaled appropriately. It also allows you to rebuild the application without taking it offline, as each node can be individually upgraded.
 
@@ -59,15 +59,15 @@ Each Pi needs to be configured to be able to run each part of the web farm. We f
 
 To connect to the Pi you will need its local IP address and an SSH client, such as [Putty](https://www.putty.org/). You will be able to find the IP address of the Pi via your router dashboard and you will be able to connect via SSH using port 22.
 
-![Connecting with putty](../assets/images/blog/content/AE29CD58-F28F-4A0E-BFFB-A7E4E1235797.png)
+![Connecting with putty](../assets/images/blog/content/ae29cd58-f28f-4a0e-bffb-a7e4e1235797.png)
 
 Open the connection and a terminal displaying a login prompt will appear. The default credentials for Raspbian are ```pi``` as the username and ```raspberry``` as the password.
 
-![Terminal login](../assets/images/blog/content/17343F27-A62F-4193-A0E5-4190D948EB2E.png)
+![Terminal login](../assets/images/blog/content/17343f27-a62f-4193-a0e5-4190d948eb2e.png)
 
 Once connected to the Pi you should do several things, including changing the password, setting up a hostname and updating the software. To change the password and update the hostname, along with accessing many other useful configuration settings, run the command ```sudo raspi-config``` which will open up a configuration menu.
 
-![Raspbian config](../assets/images/blog/content/39374DE9-F24A-46F6-9955-982687607C6D.png)
+![Raspbian config](../assets/images/blog/content/39374de9-f24a-46f6-9955-982687607c6d.png)
 
 Running ```sudo apt update``` and ```sudo apt upgrade``` will update all of the software on the Pi and from there you will be prepared to install the software required to configure your web farm.
 

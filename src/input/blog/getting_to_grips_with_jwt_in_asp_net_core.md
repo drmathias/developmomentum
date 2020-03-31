@@ -1,4 +1,4 @@
-![Locks](../assets/images/blog/E4956336-3662-46AE-BEA2-7FD3059919C3-w1920-h1440.jpg)
+![Locks](../assets/images/blog/e4956336-3662-46ae-bea2-7fd3059919c3-w1920-h1440.jpg)
 
 ## Breaking down authorization
 JSON Web Tokens (JWT) are a highly popular and widely used component of client-server authentication. The idea behind JWT is to provide a simple and secure method of exchanging data which can be verified to have been untampered and created by a known party. A JWT is made up of three parts:
@@ -113,7 +113,7 @@ The generated swagger documentation will include these sections. Once again, if 
 
 If using Swagger UI, you will now see a padlock button next to each defined endpoint. Clicking this button and providing a JWT will ensure it is sent in the header of any request that is made through Swagger UI.
 
-![Swagger UI](../assets/images/blog/content/1748CC9C-9EA0-47B8-A110-AD3A114408D1.png)
+![Swagger UI](../assets/images/blog/content/1748cc9c-9ea0-47b8-a110-ad3a114408d1.png)
 
 ### Integrating with SignalR
 
@@ -189,13 +189,13 @@ In the examples shown so far, all the tokens which are created and validated are
 
 A symmetric algorithm uses a single secret which is used for encryption of data. Therefore both the sending and receiving party require knowledge of the same secret to be able to securely share the data. This makes it especially good for securing communication between two services which are both under your control. This includes a setup where you have an authentication server which a user calls, returning a token that is signed with a secret and validated by your service with the same secret. In almost all cases which require token authentication, a symmetric algorithm will be adaquate.
 
-![Symmetric process](../assets/images/blog/content/FED0E592-D063-497B-9A3B-2BFC29B04D1A.jpg)
+![Symmetric process](../assets/images/blog/content/fed0e592-d063-497b-9a3b-2bfc29b04d1a.jpg)
 
 
 ### Asymmetric algorithms
 
 An asymmetric algorithm composes both a public key and private secret. The public key can be available to anyone and can only verify messages which are signed with a particular secret. What this allows is for a receiving party of a message to verify that a particular party created the message, by using the public key.
 
-![Asymmetric process](../assets/images/blog/content/5C660F5C-04FB-46CD-9846-EDCCB9A7B778.jpg)
+![Asymmetric process](../assets/images/blog/content/5c660f5c-04fb-46cd-9846-edccb9a7b778.jpg)
 
 A JWT can be asymmetrically signed, though it would require a very particular scenario for this to be beneficial. There would have to be a requirement of the same key being needed to authenticate with two or more seperate externally-controlled applications. One possibility of this scenario would be having a central login service used by a number of applications, which are developed by different teams. The login service could return an asymmetrically signed JWT which allows each application to verify that a user is signed in, however does not allow any of these applications to generate a valid token. This reduces the amount of work needed to do a security audit as auditing the login server would display inherent trust in the other applications.

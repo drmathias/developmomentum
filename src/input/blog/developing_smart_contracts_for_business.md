@@ -1,4 +1,4 @@
-![Stratis logo](../assets/images/blog/2A40DF99-1847-4726-9C5B-AF4779EEB667-w1920-h1440.jpg)
+![Stratis logo](../assets/images/blog/2a40df99-1847-4726-9c5b-af4779eeb667-w1920-h1440.jpg)
 
 ## Blockchain in .NET
 
@@ -149,7 +149,7 @@ The parameters are passed as key-value pairings with the key being a number repr
 
 Cirrus Core allows you to create smart contracts through the UI. Navigate to the smart contracts tab, select create contract, and fill out the modal form. When you submit the contract, you will be able to view this in the UI.
 
-![Cirrus core UI](../assets/images/blog/content/B3BE6C1C-725A-4AF2-A85F-E47E09BBCEEF.png)
+![Cirrus core UI](../assets/images/blog/content/b3be6c1c-725a-4af2-a85f-e47e09bbceef.png)
 
 ### Inside a contract
 

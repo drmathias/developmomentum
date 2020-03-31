@@ -1,4 +1,4 @@
-![ASP.NET Farm](../assets/images/blog/512E4DD1-6B3D-41AA-80A1-B96C3370B3C3-w1920-h1440.jpg)
+![ASP.NET Farm](../assets/images/blog/512e4dd1-6b3d-41aa-80a1-b96c3370b3c3-w1920-h1440.jpg)
 
 ## Web farm configuration
 
@@ -83,4 +83,4 @@ docker run -it -p 80:80 imageName:latest
 
 We map port 80 on the host machine to the port we exposed in the Dockerfile, allowing the load balancer to route requests to the server. To check that your container is running, navigate to the local IP of the machine in your browser, which will by default try to access port 80.
 
-![Image of sample application running](../assets/images/blog/content/5CB6FB87-75D0-4AA4-99C7-B7815CA7EA70.png)
+![Image of sample application running](../assets/images/blog/content/5cb6fb87-75d0-4aa4-99c7-b7815ca7ea70.png)
