@@ -149,6 +149,12 @@ p img {
     color: #111111;
 }
 
+.fourzerofour {
+    font-size: 160px;
+    line-height: 160px;
+    font-family: $font-family-header;
+}
+
 $shadow-rgba: rgba(#280A96, 0.01);
 
 @mixin box-shadow($shadow...) {
