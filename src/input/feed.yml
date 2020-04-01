@@ -1,0 +1,21 @@
+Subdomain: www
+Domain: developmomentum.com
+FeedRss: false
+FeedAtom: true
+FeedSources: "blog/{*,!index.*}"
+FeedOrderKey: Published
+FeedOrderDescending: true
+FeedSize: 20
+FeedId: >
+  => $"{Subdomain}.{Domain}"
+FeedTitle: Develop Momentum
+FeedAuthor: Adam Shirt
+FeedDescription: Blogging about web development and blockchain.
+FeedLink: >
+  => $"https://{Subdomain}.{Domain}/feed.atom"
+Copyright: >
+  => $"© {DateTime.Today.Year} Develop Momentum"
+FeedItemId: >
+  => $"tag:{Domain},{Published}:{DocumentName}"
+FeedItemLink: >
+  => $"https://{FeedId}/blog/{DocumentName}.html"
