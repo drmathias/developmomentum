@@ -2,7 +2,7 @@ DocumentName: getting_to_grips_with_jwt_in_asp_net_core
 Title: Getting to Grips with JWT in ASP.NET Core
 Description: Understanding why and how to use JWT in your authentication protocols can be confusing, due to the many different protocols available and the different terminology used. This guide tries to keep things simple, detailing how to integrate a simple JWT-based authentication protocol into your apps.
 Published: 2019-09-28
-Updated: 2019-09-28
+Updated: 2019-04-03
 ---
 ![Locks](../assets/images/blog/e4956336-3662-46ae-bea2-7fd3059919c3-w1920-h1440.jpg)
 
@@ -23,7 +23,7 @@ Often JWT are used along with a protocol such as OAuth 2.0, usually being genera
 
 When sending requests over HTTP which require authorisation, an authorisation token is most often sent in the Authorization header. For JWT tokens, the header will be in the format of:
 
-```yaml
+```http
 Authorization: Bearer {token}
 ```
 

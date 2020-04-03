@@ -2,7 +2,7 @@ DocumentName: developing_smart_contracts_for_business
 Title: Developing Smart Contracts for Business with .NET
 Description: Smart contracts are perfect for integrating automated, trustless financial transactions into your applications. Learn the basics of how to develop smart contracts with .NET, by using Stratis platform.
 Published: 2019-12-18
-Updated: 2019-12-18
+Updated: 2019-04-03
 ---
 ![Stratis logo](../assets/images/blog/2a40df99-1847-4726-9c5b-af4779eeb667-w1920-h1440.jpg)
 
@@ -103,8 +103,8 @@ Smart contracts can be deployed via the API, through the Cirrus Core wallet UI o
 
 Clone the [tool](https://github.com/stratisproject/Stratis.SmartContracts.Tools.Sct) onto your machine and open the command line. Navigate to the directory of the cloned project and run the following command.
 
-```powershell
-dotnet run -- validate [pathToContract.cs] -sb
+```shell
+dotnet run --validate [pathToContract.cs] -sb
 ```
 
 If the contract is invalid, this will display a trace that details the error, allowing you to easily resolve it. For a valid contract, you will see byte code output to the console, which you need to copy to deploy the contract.
@@ -127,8 +127,8 @@ When deploying a contract in another contract, you only have to manually set the
 
 The web API includes an endpoint that can be called to create a smart contract.
 
-```text
-POST /api/SmartContractWallet/create
+```http
+POST /api/SmartContractWallet/create HTTP/1.1
 ```
 
 Call this endpoint with a request body structured as so.
@@ -207,8 +207,8 @@ The process for interacting with a contract is split into two stages:
 
 The API has an OpenAPI specification which you can use to determine the endpoints that you can call. In what appears to be v2 of the API, you can call the following endpoint to invoke a method on the smart contract.
 
-```
-POST /api/contract/{contractAddress}/method/{methodName}
+```http
+POST /api/contract/{contractAddress}/method/{methodName} HTTP/1.1
 ```
 
 A successful HTTP request to this endpoint returns a result with the following structure:
@@ -225,11 +225,11 @@ A successful HTTP request to this endpoint returns a result with the following s
 
 We only really care about the transaction ID, as this is what is used to read the receipt.
 
-```text
-GET /api/SmartContracts/receipt?txHash=5a71be426c5d6e3f70efc3a304bfe783f0466531c69715f209c46480cd0f1d6a
+```http
+GET /api/SmartContracts/receipt?txHash=5a71be426c5d6e3f70efc3a304bfe783f0466531c69715f209c46480cd0f1d6a HTTP/1.1
 ```
 
-Until the next block is mined, this will return a HTTP 400 status code. The only option available is to poll a request until the next block is mined, as unfortunately there isn't a web hook you can set up to receive a notification.
+Until the next block is mined, this will return a HTTP 400 status code. At this time, the only option available to be notified when the receipt becomes available, is to poll a request until the next block is mined.
 
 Once the block is mined, it will return you a 200 OK result, with a receipt of the transaction that has the following structure, and which contains a return value that you can read.
 
@@ -254,8 +254,8 @@ Once the block is mined, it will return you a 200 OK result, with a receipt of t
 
 Logged data can be accessed from calling the full node API, to read the receipts of the contracts.
 
-```text
-GET /api/SmartContracts/receipt-search?contractAddress=&eventName=
+```http
+GET /api/SmartContracts/receipt-search?contractAddress=&eventName= HTTP/1.1
 ```
 
 The query parameter ```eventName``` is the name of the logged struct type. Calling this will return an array of logged receipts, with a structure like the one below.
@@ -293,25 +293,7 @@ The query parameter ```eventName``` is the name of the logged struct type. Calli
 ]
 ```
 
-Ordering logs by time is possible if you retrieve the height of the hashed block. To do this, make further calls to the block store API.
-
-```text
-GET /api/blockStore/block?hash=&showTransactionDetails=false&outputJson=true
-```
-
-The output of this call includes a height property, which can be used to order the array of logs. If using C#, you can do this relatively easily with LINQ. In this example I'm using DTOs that I have created to hold the result of the API calls.
-
-```csharp
-var orderedResults = receipts
-    .Where(receipt => receipt.Success)
-    .OrderBy(async receipt =>
-    {
-        // makes an api call to retrieve block data
-        var block = await _blockStoreService.GetBlockData(receipt.BlockHash);
-        return block.Height;
-    })
-    .SelectMany(receipt => receipt.Logs.Select(log => log.Log))
-```
+Receipts are returned in block height order.
 
 ## Further reading
 

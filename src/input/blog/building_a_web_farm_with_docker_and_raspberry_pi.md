@@ -2,7 +2,7 @@ DocumentName: building_a_web_farm_with_docker_and_raspberry_pi
 Title: Building a Web Farm with Docker and Raspberry Pi
 Description: This was inspired by the fact that the Raspberry Pi launch site was hosted on a Raspberry Pi web farm. Follow this guide to have a go at building a small, cheap, but very powerful web farm, that is suitable for serving your website to tens of thousands of visitors per day.
 Published: 2019-08-10
-Updated: 2019-08-10
+Updated: 2019-04-03
 ---
 ![Rasperry Pi Web Farm](../assets/images/blog/823a7764-af7c-4687-a42e-bd70768068ab-w1920-h1440.jpg)
 
@@ -66,6 +66,8 @@ Each Pi needs to be configured to be able to run each part of the web farm. We f
 To connect to the Pi you will need its local IP address and an SSH client, such as [Putty](https://www.putty.org/). You will be able to find the IP address of the Pi via your router dashboard and you will be able to connect via SSH using port 22.
 
 ![Connecting with putty](../assets/images/blog/content/ae29cd58-f28f-4a0e-bffb-a7e4e1235797.png)
+
+Note that Windows 10 already comes with OpenSSH included, meaning you will not have to install any additional software. You should be able to use `ssh` command from the command line.
 
 Open the connection and a terminal displaying a login prompt will appear. The default credentials for Raspbian are ```pi``` as the username and ```raspberry``` as the password.
 
