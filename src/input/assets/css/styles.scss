@@ -161,6 +161,10 @@ p, ul, ol, dl, pre {
     margin-bottom: 1.5rem;
 }
 
+p > a {
+    overflow-wrap: break-word;
+}
+
 .blog-post-results img {
     width: 100%;
 }
