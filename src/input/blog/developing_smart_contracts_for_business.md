@@ -1,8 +1,8 @@
 DocumentName: developing_smart_contracts_for_business
-Title: Developing Smart Contracts for Business with .NET
+Title: Developing Smart Contracts for Business With .NET
 Description: Smart contracts are perfect for integrating automated, trustless financial transactions into your applications. Learn the basics of how to develop smart contracts with .NET, by using Stratis platform.
 Published: 2019-12-18
-Updated: 2019-04-03
+Updated: 2019-12-18
 ---
 ![Stratis logo](../assets/images/blog/2a40df99-1847-4726-9c5b-af4779eeb667-w1920-h1440.jpg)
 
