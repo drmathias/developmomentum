@@ -68,13 +68,21 @@ fetch('https://www.example.com/resolve/skylink')
     });
 ```
 
-Another difficulty you will face is correctly defining links. Any root-relative links will not work when accessing your site through a portal, therefore it is important to replace these with relative links instead. This can be quite a challenge, since you will likely be using a static generator to generate your website.
+Another difficulty you will face is correctly defining links. Any root-relative links will not work when accessing your site through a portal, therefore it is important to replace these with relative links instead. This can be quite a challenge, since you will likely be using a static generator to generate your website. Links must also include the full file name, as Skynet does not recognise default file names.
 
 Make sure to explicitly define the location of your favicon, else the browser will not be able to locate it, since it defaults to looking for it at the site root.
 
 ```html
 <link rel="shortcut icon" href="../favicon.ico" />
 ```
+
+The simplest way to get your static website running on Skynet, is to upload the root directory via a Skynet portal. Navigate to any Skynet portal, click on _Do you want to upload entire directory?_ and then select the root directory of your website.
+
+![Skynet webportal](../assets/images/blog/content/765827f6-192b-48c9-b3e1-cb7b33e3b881.png)
+
+Once the upload has completed, you will receive a Skylink for the directory. When navigating the website, every page must be explicitly specified by name in the URL path.
+
+Since Skynet can be interacted with via a web API, it is possible to set up an automated continuous deployment pipeline, that deploys your site to Skynet.
 
 ### Dynamic websites
 

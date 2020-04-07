@@ -72,8 +72,7 @@ Firstly, include the Swashbuckle package into the startup project.
 <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.1" />
 ```
 
-Using the built in dependency injection container, add the OpenAPI specification generation middleware, allowing definition of authorisation protocols.
-Make sure to call ```IApplicationBuilder.UseSwagger()``` to invoke the middleware. 
+Using the built in dependency injection container, add the OpenAPI specification generation middleware, allowing definition of authorisation protocols. Make sure to call ```IApplicationBuilder.UseSwagger()``` to invoke the middleware. 
 
 ```csharp
 services.AddSwaggerGen(options =>
