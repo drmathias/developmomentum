@@ -1,4 +1,5 @@
 ﻿using Statiq.App;
+using Statiq.Common;
 using Statiq.Web;
 using Statiq.Images;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace Blog
             await Bootstrapper
                 .Factory
                 .CreateWeb(args)
+                .AddSetting(WebKeys.OptimizeContentFileNames, false)
+                .AddSetting(WebKeys.GenerateSitemap, false)
                 .BuildPipeline("ResizeTitleImages", builder => {
                     builder.WithInputReadFiles("assets/images/blog/*.{jpg,png,gif}");
                     builder.WithInputModules(new MutateImage()

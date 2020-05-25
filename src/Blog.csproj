@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Statiq.Web" Version="1.0.0-alpha.3" />
-    <PackageReference Include="Statiq.Images" Version="1.0.0-alpha.28" />
+    <PackageReference Include="Statiq.Web" Version="1.0.0-alpha.14" />
+    <PackageReference Include="Statiq.Images" Version="1.0.0-beta.11" />
   </ItemGroup>
 
   <ItemGroup>
