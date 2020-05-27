@@ -16,28 +16,24 @@
 </head>
 <body class="d-flex flex-column">
     <div class="flex-grow-1 d-flex flex-column">
-        <header class="pt-4 pb-3 d-flex shadow-below">
-            <div class="container d-flex align-items-center">
-                <div class="flex-grow-1 d-flex">
-                    <div class="logo d-flex align-items-center mr-2">
-                        <a href="../index.html" class="logo-icon"><img src="../assets/images/logo.svg" /></a>
-                        <span>Develop Momentum</span>
-                    </div>
-                    @if(IsSectionDefined("navbar")) {
-                        @RenderSection("navbar")
-                    } else {
-                        <nav class="d-flex align-items-center ml-2">
-                            <ol class="list-unstyled my-0">
-                                <li class="mx-2"><a class="text-decoration-none" href="index.html">Latest</a></li>
-                            </ol>
-                        </nav>
-                    }
-                </div>
-                <label id="dark-mode-switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
+        <header class="container shadow-below">
+            <div class="logo">
+                <a href="../index.html" class="logo-icon"><img src="../assets/images/logo.svg" /></a>
+                <span>Develop Momentum</span>
             </div>
+            @if(IsSectionDefined("navbar")) {
+                @RenderSection("navbar")
+            } else {
+                <nav>
+                    <ol>
+                        <li><a class="text-decoration-none" href="index.html">Latest</a></li>
+                    </ol>
+                </nav>
+            }
+            <label id="dark-mode-switch" class="push-end">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
         </header>
         @if(Document.ContainsKey(FeedKeys.Published) && Document.ContainsKey(FeedKeys.Updated))
         {

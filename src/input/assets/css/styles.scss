@@ -49,6 +49,54 @@ body {
     background-color: var(--color-secondary);
 }
 
+header {
+    display: grid;
+    grid-template:
+        'logo logo theme'
+        'navbar navbar navbar';
+    gap: 1rem 2rem;
+    align-items: center;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.logo {
+    grid-area: logo;
+    font-family: $font-family-logo;
+    display: flex;
+    align-items: center;
+}
+
+.logo > .logo-icon {
+    margin: 0 10px 0 0;
+}
+
+.logo > span {
+    white-space: nowrap;
+}
+
+.logo-icon > img {
+    width: 48px;
+    height: 48px;
+}
+
+nav {
+    grid-area: navbar;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+nav > ol {
+    margin: 0 -.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+nav > ol li {
+    margin: 0 .5rem;
+}
+
 nav a, nav a:hover, nav a:focus {
     color: var(--color-nav-anchor);
 }
@@ -70,9 +118,6 @@ h1, h2, h3 {
     font-family: $font-family-header;
     padding-top: 1rem;
     margin-bottom: 1rem;
-}
-
-h1, h2, h3  {
     color: var(--color-primary);
 }
 
@@ -115,19 +160,6 @@ p > a {
     width: 100%;
 }
 
-.logo {
-    font-family: $font-family-logo;
-}
-
-.logo > .logo-icon {
-    margin: 0 10px 0 0;
-}
-
-.logo-icon > img {
-    width: 48px;
-    height: 48px;
-}
-
 .social svg {
     width: 1rem;
     height: 1rem;
@@ -166,6 +198,7 @@ p > a {
 /* LIGHT/DARK SWITCH */
 
 #dark-mode-switch {
+    grid-area: theme;
     position: relative;
     display: inline-block;
     width: 54px;
@@ -216,6 +249,24 @@ p > a {
   .slider.round:before {
     border-radius: 50%;
   }
+
+/* ALIGNMENT */
+
+.push-end {
+    justify-self: end;
+}
+
+/* RESIZE */
+
+@media (min-width: 576px) {
+    header {
+        grid-template: 'logo navbar theme' auto / auto 1fr auto;
+    }
+
+    nav {
+        justify-self: start;
+    }
+}
 
 /* FONTS */
 
