@@ -6,11 +6,30 @@ $font-family-logo: 'Questrial', sans-serif;
 $font-family-header: 'Varela Round', sans-serif;
 $font-family-regular: 'Open Sans';
 
-$primary: #111;
+[data-theme='light'] {
+    --color-primary: #111;
+    --color-secondary: #fff;
+    --color-depth: #f7f7f7;
+    --color-nav-anchor: #03489e;
+    --color-muted: #c1cbd4;
+    --color-anchor: #749ee7;
+    --color-shadow: rgba(17, 17, 17, 0.01);
+}
 
-$secondary: #333;
+[data-theme='dark'] {
+    --color-primary: #ccc;
+    --color-secondary: #232323;
+    --color-depth: #1c1c1c;
+    --color-nav-anchor: #ffe000;
+    --color-muted: #5f5d54;
+    --color-anchor: #d4d0a5;
+    --color-shadow: rgba(5, 5, 5, 0.07);
+}
 
-$shadow-rgba: rgba(#280A96, 0.01);
+:root {
+    --color-day: #F5E8B6;
+    --color-night: #7B8993;
+}
 
 @mixin box-shadow($shadow...) {
     -webkit-box-shadow: $shadow;
@@ -26,94 +45,25 @@ html, body {
 body {
     min-height: 100vh;
     font-family: $font-family-regular;
-    color: $primary;
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+}
+
+nav a, nav a:hover, nav a:focus {
+    color: var(--color-nav-anchor);
+}
+
+a, a:hover, a:focus {
+    color: var(--color-anchor);
+}
+
+.text-muted {
+    color: var(--color-muted) !important;
 }
 
 .icons svg {
     width: 36px;
     height: 36px;
-}
-
-@media screen {
-    @include media-breakpoint-up(md) {
-        .icon-md-100 {
-            width: 100% !important;
-            height: auto !important;
-        }
-    }
-
-    @include media-breakpoint-down(md) {
-        body {
-            -webkit-overflow-scrolling: touch;
-        }
-    }
-
-    @include media-breakpoint-up(lg) {
-        .h-lg-100 {
-            height: 100%;
-        }
-    }
-}
-
-@each $size, $length in $sizes {
-    .max-vw-#{$size} {
-        max-width: #{$size}vw !important;
-    }
-
-    .min-vw-#{$size} {
-        min-width: #{$size}vw !important;
-    }
-
-    .max-vh-#{$size} {
-        max-height: #{$size}vh !important;
-    }
-
-    .min-vh-#{$size} {
-        min-height: #{$size}vh !important;
-    }
-}
-
-@each $color, $value in $colors {
-    @include text-emphasis-variant(".text-#{$color}", $value, true);
-
-    .bg-#{$color} {
-        background-color: $value;
-    }
-
-    .bg-gradient-#{$color} {
-        background: $value linear-gradient(180deg, $value, darken($value, 10%)) repeat-x !important;
-    }
-
-    .text-#{$color} {
-        color: $value;
-    }
-
-    .icon-#{$color} {
-        --fa-primary-color: #{$value};
-        --fa-secondary-color: #{lighten($value, 20%)};
-    }
-}
-
-.icon-theme {
-    --fa-primary-color: #{$primary};
-    --fa-secondary-color: #{$secondary};
-}
-
-.icon-100 {
-    width: 100% !important;
-    height: auto !important;
-}
-
-.font-size-lg {
-    font-size: $font-size-lg;
-}
-
-.font-size-sm {
-    font-size: $font-size-sm;
-}
-
-.font-size-base {
-    font-size: $font-size-base;
 }
 
 h1, h2, h3 {
@@ -122,12 +72,8 @@ h1, h2, h3 {
     margin-bottom: 1rem;
 }
 
-h1 {
-    color: $primary;
-}
-
-h2, h3 {
-    color: $secondary;
+h1, h2, h3  {
+    color: var(--color-primary);
 }
 
 h3 {
@@ -140,16 +86,16 @@ p img {
 }
 
 pre, code {
-    background: #f7f7f7;
+    background: var(--color-depth);
 }
 
 pre {
     overflow-x: auto;
-    @include box-shadow(0 0 1rem 0.05rem $shadow-rgba);
+    @include box-shadow(0 0 1rem 0.05rem var(--color-shadow));
 }
 
 code {
-    color: $secondary;
+    color: var(--color-primary) !important;
 }
 
 pre > code {
@@ -192,7 +138,7 @@ p > a {
 }
 
 .feather-twitch {
-    color: #6441A4;
+    color: #9146dd;
 }
 
 .feather-rss {
@@ -200,7 +146,7 @@ p > a {
 }
 
 .feather-mail {
-    color: #111;
+    color: var(--color-primary);
 }
 
 .fourzerofour {
@@ -210,12 +156,66 @@ p > a {
 }
 
 .shadow-above {
-    @include box-shadow(0 -1rem 1rem 0.05rem $shadow-rgba);
+    @include box-shadow(0 -1rem 1rem 0.05rem var(--color-shadow));
 }
 
 .shadow-below {
-    @include box-shadow(0 1rem 1rem 0.05rem $shadow-rgba);
+    @include box-shadow(0 1rem 1rem 0.05rem var(--color-shadow));
 }
+
+/* LIGHT/DARK SWITCH */
+
+#dark-mode-switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+    margin: 0;
+  }
+  
+  #dark-mode-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-day);
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 5px;
+    bottom: 4px;
+    background-color: var(--color-secondary);
+  }
+  
+  input:checked + .slider {
+    background-color: var(--color-night);
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+  }
+  
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
 
 /* FONTS */
 
