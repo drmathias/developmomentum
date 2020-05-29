@@ -35,13 +35,13 @@ steps:
 - task: CopyFiles@2
   displayName: Copy
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/src/output'
+    SourceFolder: '$(Build.SourcesDirectory)/output'
     Contents: '**\*'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/src/output'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
 
 - task: PublishPipelineArtifact@1
   displayName: Share
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/src/output'
-    artifact: 'BlogOutput'
+    targetPath: '$(Build.ArtifactStagingDirectory)/output'
+    artifact: 'DevelopMomentumAzure'
     publishLocation: 'pipeline'
