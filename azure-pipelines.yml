@@ -26,9 +26,16 @@ steps:
     command: 'build'
     projects: $(project)
 
+- task: CopyFiles@2
+  displayName: Copy
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/src/output'
+    Contents: '**\*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/src/output'
+
 - task: PublishPipelineArtifact@1
   displayName: Share
   inputs:
-    targetPath: '$(Pipeline.Workspace)/src/output'
+    targetPath: '$(Build.ArtifactStagingDirectory)/src/output'
     artifact: 'BlogOutput'
     publishLocation: 'pipeline'
