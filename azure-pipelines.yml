@@ -32,11 +32,15 @@ steps:
     command: 'run'
     projects: '$(project)'
 
+- task: CmdLine@2
+  inputs:
+    script: 'ls'
+
 - task: CopyFiles@2
   displayName: Copy
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/output'
-    Contents: '**\*'
+    SourceFolder: 'src/output'
+    Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
 
 - task: PublishPipelineArtifact@1
