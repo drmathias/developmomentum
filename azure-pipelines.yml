@@ -33,8 +33,14 @@ steps:
     projects: '$(project)'
 
 - task: CmdLine@2
+  displayName: SourcesDirectory
   inputs:
-    script: 'ls'
+    script: 'ls $(Build.SourcesDirectory)'
+
+- task: CmdLine@2
+  displayName: src
+  inputs:
+    script: 'ls $(Build.SourcesDirectory)/src'
 
 - task: CopyFiles@2
   displayName: Copy
