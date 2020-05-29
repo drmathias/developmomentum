@@ -38,11 +38,6 @@ steps:
     script: 'ls $(Build.SourcesDirectory)/src'
 
 - task: CmdLine@2
-  displayName: Workspace
-  inputs:
-    script: 'ls $(Pipeline.Workspace)/src'
-
-- task: CmdLine@2
   displayName: Current
   inputs:
     script: 'ls src'
