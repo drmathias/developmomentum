@@ -35,12 +35,17 @@ steps:
 - task: CmdLine@2
   displayName: SourcesDirectory
   inputs:
-    script: 'ls $(Build.SourcesDirectory)'
+    script: 'ls $(Build.SourcesDirectory)/src'
 
 - task: CmdLine@2
-  displayName: src
+  displayName: Workspace
   inputs:
-    script: 'ls $(Build.SourcesDirectory)/src'
+    script: 'ls $(Pipeline.Workspace)/src'
+
+- task: CmdLine@2
+  displayName: Current
+  inputs:
+    script: 'ls src'
 
 - task: CopyFiles@2
   displayName: Copy
