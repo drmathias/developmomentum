@@ -15,11 +15,20 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
     command: 'restore'
     projects: $(project)
 
 - task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
     command: 'build'
     projects: $(project)
+
+- task: PublishPipelineArtifact@1
+  displayName: Share
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/src/output'
+    artifact: 'BlogOutput'
+    publishLocation: 'pipeline'
