@@ -3,7 +3,7 @@
 @import "../bootstrap/mixins";
 
 $font-family-logo: 'Questrial', sans-serif;
-$font-family-header: 'Varela Round', sans-serif;
+$font-family-header: 'DM Serif Display', serif;
 $font-family-regular: 'Open Sans';
 
 [data-theme='light'] {
@@ -270,22 +270,14 @@ p > a {
 
 /* FONTS */
 
-/* varela-round-regular - latin */
-@font-face {
-    font-family: 'Varela Round';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Varela Round Regular'), local('VarelaRound-Regular'), url('../fonts/varela-round-v11-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url('../fonts/varela-round-v11-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-
 /* open-sans-regular - latin */
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
-    src: local('Open Sans Regular'), local('OpenSans-Regular'), url('../fonts/open-sans-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url('../fonts/open-sans-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    src: local('Open Sans Regular'), local('OpenSans-Regular'),
+        url('../fonts/open-sans-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../fonts/open-sans-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* questrial-regular - latin */
@@ -293,6 +285,17 @@ p > a {
     font-family: 'Questrial';
     font-style: normal;
     font-weight: 400;
-    src: local('Questrial'), local('Questrial-Regular'), url('../fonts/questrial-v9-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url('../fonts/questrial-v9-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    src: local('Questrial'), local('Questrial-Regular'),
+        url('../fonts/questrial-v9-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../fonts/questrial-v9-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+
+/* dm-serif-display-regular - latin */
+@font-face {
+    font-family: 'DM Serif Display';
+    font-style: normal;
+    font-weight: 400;
+    src: local('DM Serif Display Regular'), local('DMSerifDisplay-Regular'),
+         url('../fonts/dm-serif-display-v4-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/dm-serif-display-v4-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
