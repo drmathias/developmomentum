@@ -37,7 +37,7 @@ steps:
 - task: CopyFiles@2
   displayName: Copy
   inputs:
-    SourceFolder: '$(Build.SourcesFolder)/src/output'
+    SourceFolder: '$(Build.SourcesDirectory)/src/output'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
 
