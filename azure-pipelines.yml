@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  project: 'src/Blog.csproj'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    projects: $(project)
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: $(project)
+    workingDirectory: 'src'
+
+- task: DotNetCoreCLI@2
+  displayName: Generate
+  inputs:
+    command: 'run'
+    projects: $(project)
+    workingDirectory: 'src'
+
+- task: CopyFiles@2
+  displayName: Copy
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/src/output'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
+
+- task: PublishPipelineArtifact@1
+  displayName: Share
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/output'
+    artifact: 'DevelopMomentumAzure'
+    publishLocation: 'pipeline'
