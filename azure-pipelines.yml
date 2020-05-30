@@ -10,7 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  project: 'src/Blog.csproj'
+  project: 'Blog.csproj'
+  srcFolder: '$(Build.SourcesDirectory)/src'
 
 steps:
 
@@ -19,33 +20,26 @@ steps:
   inputs:
     command: 'restore'
     projects: $(project)
+    workingDirectory: $(srcFolder)
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: 'build'
     projects: $(project)
+    workingDirectory: $(srcFolder)
 
 - task: DotNetCoreCLI@2
   displayName: Generate
   inputs:
     command: 'run'
-    projects: '$(project)'
-
-- task: CmdLine@2
-  displayName: SourcesDirectory
-  inputs:
-    script: 'ls $(Build.SourcesDirectory)/src'
-
-- task: CmdLine@2
-  displayName: Current
-  inputs:
-    script: 'ls src'
+    projects: $(project)
+    workingDirectory: $(srcFolder)
 
 - task: CopyFiles@2
   displayName: Copy
   inputs:
-    SourceFolder: 'src/output'
+    SourceFolder: '$(srcFolder)/output'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
 
