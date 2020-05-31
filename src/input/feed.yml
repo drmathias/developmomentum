@@ -1,5 +1,3 @@
-Subdomain: www
-Domain: developmomentum.com
 FeedRss: false
 FeedAtom: true
 FeedSources: "blog/{*,!index.*}"

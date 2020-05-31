@@ -1,6 +1,7 @@
 DocumentName: setting_up_an_asp_net_core_web_farm
 Title: Deploying a Kestrel Server on a Web Farm
 Description: So you've set up your storage, network, load balancer and your DNS. To host an ASP.NET Core app in a web farm, this takes you through the little extra configuration required in your app.
+Image: 512e4dd1-6b3d-41aa-80a1-b96c3370b3c3
 Published: 2019-08-11
 Updated: 2019-08-11
 ---
