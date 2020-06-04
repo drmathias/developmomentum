@@ -19,6 +19,7 @@ stages:
   jobs:
   - job: Transform
     displayName: Transform Input
+    
     variables:
       project: 'src/Blog.csproj'
 
@@ -42,6 +43,7 @@ stages:
         command: 'run'
         projects: $(project)
         workingDirectory: 'src'
+        
     - task: CopyFiles@2
       displayName: Copy
       inputs:
