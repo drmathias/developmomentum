@@ -71,7 +71,6 @@ stages:
     environment: developmomentumazure
 
     variables:
-      AZURE_SUBSCRIPTION: Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)
       AZURE_STORAGE_ACCOUNT: developmomentum
     
     strategy:
@@ -81,17 +80,17 @@ stages:
           - task: AzureCLI@2
             displayName: 'Delete Existing Files'
             inputs:
-              azureSubscription: '$(AZURE_SUBSCRIPTION)'
-              scriptType: pscore
-              scriptLocation: inlineScript
+              azureSubscription: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
               inlineScript: 'az storage blob delete-batch -s `$web --account-name $(AZURE_STORAGE_ACCOUNT) --auth-mode login'
 
-          - task: AzureFileCopy@3
+          - task: AzureFileCopy@4
             displayName: 'Copy Files to Storage'
             inputs:
-              azureSubscription: '$(AZURE_SUBSCRIPTION)'
+              azureSubscription: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
               SourcePath: '$(System.DefaultWorkingDirectory)/drmathias.developmomentum/$(ARTIFACT_NAME)'
-              Destination: AzureBlob
+              Destination: 'AzureBlob'
               storage: '$(AZURE_STORAGE_ACCOUNT)'
               ContainerName: '$web'
               
