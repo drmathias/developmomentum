@@ -42,12 +42,6 @@ stages:
         command: 'run'
         projects: $(project)
         workingDirectory: 'src'
-    
-  - job: Publish
-    displayName: Publish Artifacts
-    dependsOn: Transform
-
-    steps:
     - task: CopyFiles@2
       displayName: Copy
       inputs:
