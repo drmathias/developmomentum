@@ -44,7 +44,8 @@ stages:
         workingDirectory: 'src'
     
   - job: Publish
-    displayName: Transform Input
+    displayName: Publish Artifacts
+    dependsOn: Transform
 
     steps:
     - task: CopyFiles@2
