@@ -6,44 +6,49 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: Build
+  displayName: Build Website
+  jobs:
+  - job: CreateArtifact
+    displayName: Transform Input
+    pool:
+      vmImage: 'ubuntu-latest'
 
-variables:
-  project: 'src/Blog.csproj'
+    variables:
+      project: 'src/Blog.csproj'
 
-steps:
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: 'restore'
+        projects: $(project)
 
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: 'restore'
-    projects: $(project)
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: $(project)
+        workingDirectory: 'src'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: 'build'
-    projects: $(project)
-    workingDirectory: 'src'
+    - task: DotNetCoreCLI@2
+      displayName: Generate
+      inputs:
+        command: 'run'
+        projects: $(project)
+        workingDirectory: 'src'
 
-- task: DotNetCoreCLI@2
-  displayName: Generate
-  inputs:
-    command: 'run'
-    projects: $(project)
-    workingDirectory: 'src'
+    - task: CopyFiles@2
+      displayName: Copy
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/src/output'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
 
-- task: CopyFiles@2
-  displayName: Copy
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/src/output'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
-
-- task: PublishPipelineArtifact@1
-  displayName: Share
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/output'
-    artifact: 'DevelopMomentumAzure'
-    publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      displayName: Share
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/output'
+        artifact: 'DevelopMomentumAzure'
+        publishLocation: 'pipeline'
