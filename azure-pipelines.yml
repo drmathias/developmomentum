@@ -100,7 +100,7 @@ stages:
             displayName: 'Purge Azure CDN Endpoint'
             inputs:
               ConnectedServiceNameSelector: ConnectedServiceNameARM
-              ConnectedServiceNameARM: '$(AZURE_SUBSCRIPTION)'
+              ConnectedServiceNameARM: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
               ResourceGroupName: developmomentum
               EndpointName: developmomentum
               ProfileName: developmomentum
