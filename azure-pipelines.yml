@@ -14,12 +14,12 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build Website
+  displayName: Build
 
   jobs:
   - job: Transform
     displayName: Transform Input
-    
+
     variables:
       project: 'src/Blog.csproj'
 
@@ -43,7 +43,7 @@ stages:
         command: 'run'
         projects: $(project)
         workingDirectory: 'src'
-        
+
     - task: CopyFiles@2
       displayName: Copy
       inputs:
@@ -58,14 +58,14 @@ stages:
         artifact: '$(ARTIFACT_NAME)'
         publishLocation: 'pipeline'
 
-- stage: DeployToAzure
-  displayName: Deploy to Azure
+- stage: Release
+  displayName: Release
   dependsOn: Build
 
   jobs:
   - deployment: DeployToStorage
     displayName: Deploy to Azure Storage
-    environment: developmomentumazure
+    environment: developmomentum-production
 
     variables:
       AZURE_STORAGE_ACCOUNT: developmomentum
@@ -90,9 +90,7 @@ stages:
               Destination: 'AzureBlob'
               storage: '$(AZURE_STORAGE_ACCOUNT)'
               ContainerName: '$web'
-          
-          
-              
+
         routeTraffic:
           steps:
           - task: PurgeAzureCDNEndpoint@2
