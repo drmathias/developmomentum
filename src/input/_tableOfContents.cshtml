@@ -1,0 +1,26 @@
+<ol class="table-of-contents">
+@{
+    DocumentList<IDocument> headings = Document.GetDocumentList(HtmlKeys.Headings)
+        .Where(heading => heading.GetInt(HtmlKeys.Level) == 2).ToDocumentList();
+    headings[0].GetChildren();
+}
+
+@foreach (IDocument heading in headings.Where(heading => heading.GetInt(HtmlKeys.Level) == 2))
+{
+    string headingText = await heading.GetContentStringAsync();
+    <li>
+        <a href="#@LinkHelper.Urilize(headingText, false, false)">@headingText</a>
+    @if (heading.HasChildren()) {
+        <ol>
+            @foreach (IDocument childHeading in heading.GetChildren())
+            {
+                string childHeadingText = await childHeading.GetContentStringAsync();
+                <li>
+                    <a href="#@LinkHelper.Urilize(childHeadingText, false, false)">@childHeadingText</a>
+                </li>
+            }
+        </ol>
+    }
+    </li>
+}
+</ol>

@@ -239,7 +239,7 @@ Secret variables cannot be passed into scripts. For this reason, Azure CLI authe
 
 Service connections allow your pipelines to authenticate with external applications. Setting up a service connection in Azure DevOps is easy. In your project, navigate to _Project Settings_, then select _Service connections_. Create a service connection by selecting _New service connection_ and going through the wizard.
 
-### External Permissions
+### External permissions
 
 With a service connection set up, you may need to configure permissions in your external service. I am running an Azure CLI command against Azure Storage, which requires the service connection to be granted the permissions to delete files from Azure Storage.
 

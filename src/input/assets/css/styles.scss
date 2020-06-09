@@ -37,6 +37,10 @@ $font-family-regular: 'Open Sans';
     box-shadow: $shadow;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 html, body {
     overflow-x: hidden;
     width: 100%;
@@ -130,6 +134,26 @@ a, a:hover, a:focus {
 .icons svg {
     width: 36px;
     height: 36px;
+}
+
+.table-of-contents {
+    padding: 0;
+    list-style: none;
+    font-size: small;
+}
+
+.table-of-contents > li {
+    margin-bottom: .5rem;
+}
+
+.table-of-contents > li > a {    
+    font-weight: bold;
+}
+
+.table-of-contents > li > ol {
+    padding-left: 1rem;
+    list-style: none;
+    margin-bottom: .5rem;
 }
 
 h1, h2, h3 {

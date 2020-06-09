@@ -30,6 +30,7 @@ namespace Blog
                 .ConfigureLinks()
                 .AddSetting(WebKeys.OptimizeContentFileNames, false)
                 .AddSetting(WebKeys.GenerateSitemap, true)
+                .AddSetting(WebKeys.GatherHeadingsLevel, 3)
                 .BuildPipeline("ResizeTitleImages", builder => {
                     builder.WithInputReadFiles("assets/images/blog/*.{jpg,png,gif}");
                     builder.WithInputModules(new MutateImage()
