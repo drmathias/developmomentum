@@ -1,7 +1,7 @@
 DocumentName: decentralise_your_website_as_much_as_possible
 Title: Decentralise Your Website, as Much as Possible
 Description: The web is currently centralised, with large corporations controlling massive server farms, that are used to serve much of the content on the web. Learn how you can implement Sia Skynet, to host and distribute your content on the decentralised Sia storage network.
-Image: 9aeea0d6-737c-4be8-8b63-5ec38cbf394b
+Thumbnail: 9aeea0d6-737c-4be8-8b63-5ec38cbf394b
 Published: 2020-04-05
 Updated: 2020-04-05
 ---

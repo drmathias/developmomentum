@@ -1,7 +1,7 @@
 DocumentName: getting_to_grips_with_jwt_in_asp_net_core
 Title: Getting to Grips With JWT in ASP.NET Core
 Description: Understanding why and how to use JWT in your authentication protocols can be confusing, due to the many different protocols available and the different terminology used. This guide tries to keep things simple, detailing how to integrate a simple JWT-based authentication protocol into your apps.
-Image: e4956336-3662-46ae-bea2-7fd3059919c3
+Thumbnail: e4956336-3662-46ae-bea2-7fd3059919c3
 Published: 2019-09-28
 Updated: 2019-09-28
 ---

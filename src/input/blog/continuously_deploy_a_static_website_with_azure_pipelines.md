@@ -1,7 +1,7 @@
 DocumentName: continuously_deploy_a_static_website_with_azure_pipelines
 Title: Continuously Deploy a Static Website With Azure Pipelines
 Description: With multi-stage pipelines now officially released, Azure pipelines is more powerful than ever. Explore how you can set up CI/CD pipelines to automate the deployment of your static website.
-Image: a1ee6dcf-55ef-43cd-ae05-682d2e28e932
+Thumbnail: a1ee6dcf-55ef-43cd-ae05-682d2e28e932
 Published: 2020-06-05
 Updated: 2020-06-05
 ---

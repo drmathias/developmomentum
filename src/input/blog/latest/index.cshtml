@@ -24,7 +24,7 @@ IncludeInSitemap: >
 @foreach (IDocument post in Document.GetChildren()) {
         <li class="col-xs-12 col-sm-6 col-md-4 my-4">
             <a href="../../blog/@(post.GetString("DocumentName")).html" class="d-flex flex-column my-n1">
-                <img src="../../assets/images/blog/@(post.GetString("Image"))-w960-h720.jpg" class="my-1" />
+                <img src="../../assets/images/blog/@(post.GetString("Thumbnail"))-w960-h720.jpg" class="my-1" />
                 <span class="my-1">@post.GetTitle()</span>
             </a>
         </li>
