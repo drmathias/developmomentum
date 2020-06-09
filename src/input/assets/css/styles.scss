@@ -105,6 +105,24 @@ a, a:hover, a:focus {
     color: var(--color-anchor);
 }
 
+.pagination-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-anchor);
+    color: var(--color-secondary);
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.button:hover, .button:focus {
+    color: var(--color-secondary);
+}
+
 .text-muted {
     color: var(--color-muted) !important;
 }

@@ -1,0 +1,65 @@
+ArchiveSources: "blog/{*,!index.*}"
+ArchiveDestination: >
+  => $"blog/latest/{GetInt("Index")}.html"
+ArchivePageSize: 6
+ArchiveOrderKey: Published
+ArchiveOrderDescending: true
+ArchiveTitle: >
+  => $"{Title}{(GetInt("Index") > 1 ? $" (Page {GetInt("Index")})" : string.Empty)}"
+Title: Latest
+Description: Get the latest articles about building web-based and blockchain-based software. Stay up to date by subscribing to the Atom feed.
+IncludeInSitemap: >
+  => GetInt("Index") == 1
+---
+@section navbar {
+    <nav>
+        <ol>
+            <li><a class="text-decoration-none text-muted">Latest</a></li>
+        </ol>
+    </nav>
+}
+
+<ol class="blog-post-results list-unstyled">
+    <div class="row my-n4">
+@foreach (IDocument post in Document.GetChildren()) {
+        <li class="col-xs-12 col-sm-6 col-md-4 my-4">
+            <a href="../../blog/@(post.GetString("DocumentName")).html" class="d-flex flex-column my-n1">
+                <img src="../../assets/images/blog/@(post.GetString("Image"))-w960-h720.jpg" class="my-1" />
+                <span class="my-1">@post.GetTitle()</span>
+            </a>
+        </li>
+}
+    </div>
+</ol>
+<div class="pagination-buttons">
+    <div class="button-container-left">
+    @if (Document.GetDocument(Keys.Previous) != null) {
+        <a class="button" href="@(Document.GetInt("Index") - 1).html">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-left">
+                    <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            <span>Newer</span>
+        </a>
+    }
+    </div>
+    <div class="button-container-right">
+    @if (Document.GetDocument(Keys.Next) != null) {
+        <a class="button" href="@(Document.GetInt("Index") + 1).html">
+            <span>Older</span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-chevron-left">
+                    <polyline points="9 18 15 12 9 6"/>
+            </svg>
+        </a>
+    }
+    </div>
+</div>
