@@ -223,7 +223,30 @@ p > a {
     color: var(--color-primary);
 }
 
-.fourzerofour {
+.display-error {
+    display: grid;
+    grid-template:
+        'error'
+        'title'
+        'message';
+    grid-column-gap: 1rem;
+}
+
+.display-error h1 {
+    grid-area: title;
+}
+
+.display-error p {
+    grid-area: message;
+}
+
+.error-code {
+    display: flex;
+    grid-area: error;
+    justify-content: center;
+}
+
+.four-zero-four {
     font-size: 160px;
     line-height: 160px;
     font-family: $font-family-header;
@@ -307,6 +330,14 @@ p > a {
 
     nav {
         justify-self: start;
+    }
+}
+
+@media (min-width: 768px) {
+    .display-error {
+        grid-template:
+            'title error' auto
+            'message error' 1fr / 1fr auto;
     }
 }
 

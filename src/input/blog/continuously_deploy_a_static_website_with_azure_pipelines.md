@@ -23,7 +23,7 @@ When deploying a static website, at its core, the process seems very basic. File
 
 Most likely you will be using a static website generator, so will want to prepend steps to transform your input into your output files. The tasks required for this depend on your tech stack. At a generic level, the tasks involved will include installing dependencies, navigating the file system and running tool-specific commands.
 
-## Azure pipelines
+## Azure Pipelines
 
 ### Pipeline anatomy
 
