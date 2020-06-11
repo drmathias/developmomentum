@@ -5,7 +5,7 @@ Thumbnail: 512e4dd1-6b3d-41aa-80a1-b96c3370b3c3
 Published: 2019-08-11
 Updated: 2019-08-11
 ---
-![ASP.NET Farm](../assets/images/blog/512e4dd1-6b3d-41aa-80a1-b96c3370b3c3-w1920-h1440.jpg)
+![Centralised networks representation](../assets/images/blog/512e4dd1-6b3d-41aa-80a1-b96c3370b3c3-w1920-h1440.jpg)
 
 ## Web farm configuration
 

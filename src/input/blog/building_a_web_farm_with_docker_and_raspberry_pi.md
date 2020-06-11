@@ -5,13 +5,13 @@ Thumbnail: 823a7764-af7c-4687-a42e-bd70768068ab
 Published: 2019-08-10
 Updated: 2019-08-10
 ---
-![Rasperry Pi Web Farm](../assets/images/blog/823a7764-af7c-4687-a42e-bd70768068ab-w1920-h1440.jpg)
+![Raspberry Pi web farm](../assets/images/blog/823a7764-af7c-4687-a42e-bd70768068ab-w1920-h1440.jpg)
 
 ## Components of a web farm
 
 A web farm is a structure where two or more computers run on a network to serve the same web application. Incoming web requests are routed to a load balancer server, which offloads the request to one of the computers on the network serving the web application.
 
-![Web farm structure](../assets/images/blog/content/7b39a2f8-8060-43e7-a439-43f799d3e069.jpg)
+![Web farm structure diagram](../assets/images/blog/content/7b39a2f8-8060-43e7-a439-43f799d3e069.jpg)
 
 The benefit of this approach is that adding more nodes to the network is trivial and therefore the request handling power of the network can be scaled appropriately. It also allows you to rebuild the application without taking it offline, as each node can be individually upgraded.
 

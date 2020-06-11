@@ -12,7 +12,7 @@ $font-family-regular: 'Open Sans';
     --color-depth: #f7f7f7;
     --color-nav-anchor: #03489e;
     --color-muted: #c1cbd4;
-    --color-anchor: #749ee7;
+    --color-anchor: #407da0;
     --color-shadow: rgba(17, 17, 17, 0.01);
 }
 
@@ -103,10 +103,15 @@ nav > ol li {
 
 nav a, nav a:hover, nav a:focus {
     color: var(--color-nav-anchor);
+    text-decoration: none;
 }
 
 a, a:hover, a:focus {
     color: var(--color-anchor);
+}
+
+a:not([href]) {
+    color: var(--color-muted);
 }
 
 .pagination-buttons {
@@ -125,10 +130,6 @@ a, a:hover, a:focus {
 
 .button:hover, .button:focus {
     color: var(--color-secondary);
-}
-
-.text-muted {
-    color: var(--color-muted) !important;
 }
 
 .icons svg {

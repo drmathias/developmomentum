@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en-GB">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -31,16 +31,16 @@
     <div class="flex-grow-1 d-flex flex-column">
         <header class="container shadow-below">
             <div class="logo">
-                <a href="index.html" class="logo-icon"><img src="assets/images/logo.svg" /></a>
+                <a href="index.html" class="logo-icon"><img alt="Develop Momentum" src="assets/images/logo.svg" /></a>
                 <span>Develop Momentum</span>
             </div>
             <nav>
                 <ol>
-                    <li><a class="text-decoration-none" href="blog/latest/1.html">Latest</a></li>
+                    <li><a href="blog/latest/1.html">Latest</a></li>
                 </ol>
             </nav>
-            <label id="dark-mode-switch" class="push-end">
-                <input type="checkbox">
+            <label id="dark-mode-switch" class="push-end" aria-hidden="true">
+                <input type="checkbox" tabindex="-1">
                 <span class="slider round"></span>
             </label>
         </header>
@@ -53,7 +53,7 @@
             <span class="flex-grow-1">© @DateTime.Today.Year Adam Shirt</span>
             <ul class="m-n2 d-flex list-unstyled social">
                 <li class="m-2">
-                    <a href="https://twitter.com/adamshirt_" target="_blank">
+                    <a href="https://twitter.com/adamshirt_" aria-label="Twitter" target="_blank" rel="noopener">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="feather feather-twitter"
                             fill="none" stroke="currentColor"
@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li class="m-2">
-                    <a href="https://twitch.tv/developmomentum" target="_blank">
+                    <a href="https://twitch.tv/developmomentum" aria-label="Twitch" target="_blank" rel="noopener">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="feather feather-twitch"
                             fill="none" stroke="currentColor"
@@ -75,7 +75,7 @@
                     </a>
                 </li>
                 <li class="m-2">
-                    <a href="feed.atom" target="_blank">
+                    <a href="feed.atom" aria-label="Atom feed" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="feather feather-rss"
                             fill="none" stroke="currentColor"
@@ -88,7 +88,7 @@
                     </a>
                 </li>
                 <li class="m-2">
-                    <a href="mailto:adam.shirt@developmomentum.com">
+                    <a href="mailto:adam.shirt@developmomentum.com" aria-label="Email me">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="feather feather-mail"
                             fill="none" stroke="currentColor"

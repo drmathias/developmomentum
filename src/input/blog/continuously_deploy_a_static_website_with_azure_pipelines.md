@@ -60,11 +60,11 @@ For a static website, we want to take the code in our source control repository,
 If you do not have one already, create an [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/#DevOps) organisation and project. 
 Navigate to the _Pipelines_ tab in your Azure DevOps project, then select _New pipeline_.
 
-![New pipeline](../assets/images/blog/content/b4e772a3-effb-4a5d-82d9-db9596ccfe51.png)
+![New pipeline wizard](../assets/images/blog/content/b4e772a3-effb-4a5d-82d9-db9596ccfe51.png)
 
 You will need to connect to your source control repository as the first step to setting up your pipeline. Next select a pipeline template; it's easiest to start off with the _Starter template_. Once you have done that, you will be presented with the pipeline editor. Azure pipelines are configured in YAML, though Azure DevOps contains a handy assistant which honestly makes things 10x easier! For each task you use, take a look at the documentation if you are struggling to understand the configuration required.
 
-![Starter pipeline](../assets/images/blog/content/8af4faff-e011-4e31-ba28-5023f65d1003.png)
+![Starter pipeline template](../assets/images/blog/content/8af4faff-e011-4e31-ba28-5023f65d1003.png)
 
 The pipeline definition contains a trigger, which is the branch that is monitored for changes, to begin a new build. Likely you will want to keep this as master. A pool is also defined, which specifies the agent machines to run on. Pools can be defined at the root, per stage or per job. Be aware that if deploying to Azure, some tasks are windows-only.
 
@@ -245,7 +245,7 @@ With a service connection set up, you may need to configure permissions in your 
 
 Azure products manage permissions with _Access control (IAM)_, which allows you to assign roles to various entities in Azure. With role assignments, you can give your service connection whatever permissions are needed.
 
-![Storage access control](../assets/images/blog/content/d2731109-b50f-4c1f-b4f9-7ab8cac196da.png)
+![Azure Storage access control](../assets/images/blog/content/d2731109-b50f-4c1f-b4f9-7ab8cac196da.png)
 
 ### Committing the pipeline
 
