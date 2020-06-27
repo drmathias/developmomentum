@@ -82,6 +82,9 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: 'az storage blob delete-batch -s `$web --account-name $(AZURE_STORAGE_ACCOUNT) --auth-mode login'
 
+          - script: reg add HKCR\.js /v "Content Type" /d application/javascript /f
+            displayName: Add .js content type to registry
+
           - task: AzureFileCopy@4
             displayName: 'Copy Files to Storage'
             inputs:

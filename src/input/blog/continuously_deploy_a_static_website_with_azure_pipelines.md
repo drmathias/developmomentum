@@ -197,6 +197,9 @@ strategy:
           scriptLocation: 'inlineScript'
           inlineScript: 'az storage blob delete-batch -s `$web --account-name $(AZURE_STORAGE_ACCOUNT) --auth-mode login'
 
+      - script: reg add HKCR\.js /v "Content Type" /d application/javascript /f
+        displayName: Add .js content type to registry
+
       - task: AzureFileCopy@4
         displayName: 'Copy Files to Storage'
         inputs:
@@ -228,6 +231,8 @@ strategy:
 ```
 
 In my definition, I'm using an Azure CLI task, which takes an inline script. Scripts and script based tasks can include variables and Azure pipelines will automatically convert them into environmental variables, which will be passed into the script.
+
+After that I'm running an inline script, which resolves a bug with AzFileCopy task v4.171.1, where the MIME type for javascript files is set incorrectly. Credit to [Lectem](https://github.com/Azure/azure-cli/issues/10302#issuecomment-610417639) for this snippet.
 
 I'm using a couple of extension tasks for cache purge, which can be found in the task assistant. These tasks need to be installed before you can use them in your pipelines. I'm also defining that the cache purge steps should not disrupt the pipeline, even if they fail.
 
