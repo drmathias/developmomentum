@@ -61,6 +61,7 @@ stages:
 - stage: Release
   displayName: Release
   dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   jobs:
   - deployment: DeployToStorage
