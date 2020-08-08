@@ -22,6 +22,7 @@ stages:
 
     variables:
       project: 'src/Blog.csproj'
+      buildConfiguration: 'Release'
 
     steps:
     - task: DotNetCoreCLI@2
@@ -34,14 +35,16 @@ stages:
       displayName: Build
       inputs:
         command: 'build'
-        projects: $(project)
+        projects: '$(project)'
+        arguments: '--configuration $(buildConfiguration)'
         workingDirectory: 'src'
 
     - task: DotNetCoreCLI@2
       displayName: Generate
       inputs:
         command: 'run'
-        projects: $(project)
+        projects: '$(project)'
+        arguments: '--configuration $(buildConfiguration)'
         workingDirectory: 'src'
 
     - task: CopyFiles@2
