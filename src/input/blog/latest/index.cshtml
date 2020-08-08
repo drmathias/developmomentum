@@ -4,9 +4,9 @@ ArchiveDestination: >
 ArchivePageSize: 6
 ArchiveOrderKey: Published
 ArchiveOrderDescending: true
-ArchiveTitle: >
-  => $"{Title}{(GetInt("Index") > 1 ? $" (Page {GetInt("Index")})" : string.Empty)}"
 Title: Latest
+ArchiveTitle: >
+  => $"{GetString("Title")}{(GetInt("Index") > 1 ? $" (Page {GetInt("Index")})" : string.Empty)}"
 Description: Get the latest articles about building web-based and blockchain-based software. Stay up to date by subscribing to the Atom feed.
 IncludeInSitemap: >
   => GetInt("Index") == 1
