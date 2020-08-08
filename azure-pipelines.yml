@@ -114,3 +114,20 @@ stages:
               apikey: '$(CLOUDFLARE_API_KEY)'
               zonename: developmomentum.com
             continueOnError: true
+            
+  - deployment: DeployToSia
+    displayName: Deploy to Sia Skynet
+    environment: developmomentum-production
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DotNetCoreCLI@2
+              inputs:
+                command: 'custom'
+                custom: 'tool install skynet-cli'
+            - task: CmdLine@2
+              inputs:
+                script: 'skynet upload . --recurse'
+            
