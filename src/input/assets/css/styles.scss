@@ -110,7 +110,7 @@ a, a:hover, a:focus {
     color: var(--color-anchor);
 }
 
-a:not([href]) {
+a:not([href]), a:hover:not([href]), a:focus:not([href]) {
     color: var(--color-muted);
 }
 
