@@ -10,9 +10,12 @@
     string headingText = await heading.GetContentStringAsync();
     <li>
         <a href="#@LinkHelper.Urilize(headingText, false, false)">@headingText</a>
-    @if (heading.HasChildren()) {
+    @{
+        var children = heading.GetChildren();
+    }
+    @if (children.Count > 0) {
         <ol>
-            @foreach (IDocument childHeading in heading.GetChildren())
+            @foreach (IDocument childHeading in children)
             {
                 string childHeadingText = await childHeading.GetContentStringAsync();
                 <li>
