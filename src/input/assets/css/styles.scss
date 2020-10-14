@@ -99,6 +99,7 @@ nav > ol {
 
 nav > ol li {
     margin: 0 .5rem;
+    display: inline-block;
 }
 
 nav a, nav a:hover, nav a:focus {
@@ -208,12 +209,13 @@ p > a {
     height: 1rem;
 }
 
-.feather-twitter {
-    color: #1DA1F2;
+.icon-skynet {
+    fill: #58b560;
+    transform: scale(1.65);
 }
 
-.feather-twitch {
-    color: #9146dd;
+.feather-map {
+    color: #906642;
 }
 
 .feather-rss {
