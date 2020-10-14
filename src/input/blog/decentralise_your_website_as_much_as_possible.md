@@ -61,7 +61,7 @@ fetch('https://www.example.com/resolve/skylink')
         
         request.text()
           .then(skylink => {
-            const url = 'https://siasky.net/'.concat(skylink).concat('/index.html');
+            const url = 'https://skynet.developmomentum.com/'.concat(skylink).concat('/index.html');
             window.location.replace(url);
           });
     }).catch(error => {
@@ -93,4 +93,4 @@ In the future we may see popular CMS get built-in Sia support, in the form I jus
 
 ## Wrapping up
 
-You probably shouldn't decentralise your website just yet. But if you want to, go for it! I went ahead and made Develop Momentum available on Skynet, at [sia://AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA](https://skynet.tutemwesi.com/AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA). As a storage provider, Sia is not far off from beating all the major cloud platforms in terms of speed, cost, scalability and ease of use. It is brilliantly designed and an amazing product, though it does have its shortcomings. Many years from now, we might even look back on Skynet as being the start of the decentralised web.
+You probably shouldn't decentralise your website just yet. But if you want to, go for it! I went ahead and made Develop Momentum available on Skynet, at [sia://AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA](https://skynet.developmomentum.com/AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA). As a storage provider, Sia is not far off from beating all the major cloud platforms in terms of speed, cost, scalability and ease of use. It is brilliantly designed and an amazing product, though it does have its shortcomings. Many years from now, we might even look back on Skynet as being the start of the decentralised web.
