@@ -82,12 +82,14 @@ stages:
                 portal: 'https://skynet.developmomentum.com'
                 path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
 
-            - bash: |
-                mkdir -p $(Pipeline.Workspace)/variables
-                echo $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
+            - powershell: |
+                New-Item -Path $(Pipeline.Workspace) -Name variables -ItemType directory
+                Write-Output $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
+              displayName: Write to File
 
             - publish: $(Pipeline.Workspace)/variables
               artifact: variables
+              displayName: Share
 
 - stage: Release
   displayName: Release
@@ -152,12 +154,15 @@ stages:
     steps:
       - download: current
         artifact: variables
+        displayName: 'Retrieve Variables'
 
-      - bash: |
-          skylink=$(cat $(Pipeline.Workspace)/variables/skylink)
-          echo "##vso[task.setvariable variable=skylink]$skylink"
+      - powershell: |
+          $skylink = Get-Content $(Pipeline.Workspace)/variables/skylink
+          Write-Output "##vso[task.setvariable variable=skylink]$skylink"
+        displayName: 'Populate Variable'
 
       - task: GitHubRelease@1
+        displayName: 'Tag'
         inputs:
           gitHubConnection: 'github.com_drmathias'
           repositoryName: 'drmathias/developmomentum'
