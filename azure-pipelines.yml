@@ -77,14 +77,14 @@ stages:
           steps:
             - task: Sia-Skynet-Upload@0
               displayName: 'Upload to https://skynet.developmomentum.com'
-              name: websiteUpload
+              name: website_upload
               inputs:
                 portal: 'https://skynet.developmomentum.com'
                 path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
 
             - bash: |
                 mkdir -p $(Pipeline.Workspace)/variables
-                echo $(websiteUpload.skylink) > $(Pipeline.Workspace)/variables/skylink
+                echo $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
 
             - publish: $(Pipeline.Workspace)/variables
               artifact: variables
@@ -157,4 +157,14 @@ stages:
           skylink=$(cat $(Pipeline.Workspace)/variables/skylink)
           echo "##vso[task.setvariable variable=skylink]$skylink"
 
-      
+      - task: GitHubRelease@1
+        inputs:
+          gitHubConnection: 'github.com_drmathias'
+          repositoryName: 'drmathias/developmomentum'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'userSpecifiedTag'
+          tag: '$(Build.BuildNumber)'
+          releaseNotesSource: 'inline'
+          releaseNotesInline: 'sia://$(skylink)'
+          addChangeLog: false
