@@ -60,10 +60,30 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/output'
         artifact: '$(ARTIFACT_NAME)'
         publishLocation: 'pipeline'
+      
+- stage: Staging
+  displayName: Staging
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: 
+    displayName: Deploy to Sia Skynet
+    environment: developmomentum-staging
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: Sia-Skynet-Upload@0
+              displayName: 'Upload to https://skynet.developmomentum.com'
+              inputs:
+                portal: 'https://skynet.developmomentum.com'
+                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*'
 
 - stage: Release
   displayName: Release
-  dependsOn: Build
+  dependsOn: Staging
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   jobs:
