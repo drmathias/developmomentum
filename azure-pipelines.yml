@@ -67,7 +67,7 @@ stages:
   condition: succeeded()
 
   jobs:
-  - deployment: 
+  - deployment: DeployToSkynet
     displayName: Deploy to Sia Skynet
     environment: developmomentum-staging
     
@@ -77,9 +77,17 @@ stages:
           steps:
             - task: Sia-Skynet-Upload@0
               displayName: 'Upload to https://skynet.developmomentum.com'
+              name: websiteUpload
               inputs:
                 portal: 'https://skynet.developmomentum.com'
                 path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
+
+            - bash: |
+                mkdir -p $(Pipeline.Workspace)/variables
+                echo $(websiteUpload.skylink) > $(Pipeline.Workspace)/variables/skylink
+
+            - publish: $(Pipeline.Workspace)/variables
+              artifact: variables
 
 - stage: Release
   displayName: Release
@@ -93,7 +101,7 @@ stages:
 
     variables:
       AZURE_STORAGE_ACCOUNT: developmomentum
-    
+
     strategy:
       runOnce:
         deploy:
@@ -137,16 +145,16 @@ stages:
               apikey: '$(CLOUDFLARE_API_KEY)'
               zonename: developmomentum.com
             continueOnError: true
-  - deployment: 
-    displayName: Deploy to Sia Skynet
-    environment: developmomentum-production
+
+  - job: PublishToSkynet
+    displayName: Publish to Sia Skynet
     
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - task: Sia-Skynet-Upload@0
-              displayName: 'Upload to https://skynet.developmomentum.com'
-              inputs:
-                portal: 'https://skynet.developmomentum.com'
-                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
+    steps:
+      - download: current
+        artifact: variables
+
+      - bash: |
+          skylink=$(cat $(Pipeline.Workspace)/variables/skylink)
+          echo "##vso[task.setvariable variable=skylink]$skylink"
+
+      
