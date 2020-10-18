@@ -117,3 +117,16 @@ stages:
               apikey: '$(CLOUDFLARE_API_KEY)'
               zonename: developmomentum.com
             continueOnError: true
+  - deployment: 
+    displayName: Deploy to Sia Skynet
+    environment: developmomentum-production
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: Sia-Skynet-Upload@0
+              displayName: 'Upload to https://skynet.developmomentum.com'
+              inputs:
+                portal: 'https://skynet.developmomentum.com'
+                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*'
