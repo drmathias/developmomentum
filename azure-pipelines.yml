@@ -79,7 +79,7 @@ stages:
               displayName: 'Upload to https://skynet.developmomentum.com'
               inputs:
                 portal: 'https://skynet.developmomentum.com'
-                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*'
+                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
 
 - stage: Release
   displayName: Release
@@ -149,4 +149,4 @@ stages:
               displayName: 'Upload to https://skynet.developmomentum.com'
               inputs:
                 portal: 'https://skynet.developmomentum.com'
-                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*'
+                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
