@@ -60,10 +60,40 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/output'
         artifact: '$(ARTIFACT_NAME)'
         publishLocation: 'pipeline'
+      
+- stage: Staging
+  displayName: Staging
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployToSkynet
+    displayName: Deploy to Sia Skynet
+    environment: developmomentum-staging
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: Sia-Skynet-Upload@0
+              displayName: 'Upload to https://skynet.developmomentum.com'
+              name: website_upload
+              inputs:
+                portal: 'https://skynet.developmomentum.com'
+                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
+
+            - powershell: |
+                New-Item -Path $(Pipeline.Workspace) -Name variables -ItemType directory
+                Write-Output $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
+              displayName: Write to File
+
+            - publish: $(Pipeline.Workspace)/variables
+              artifact: variables
+              displayName: Share
 
 - stage: Release
   displayName: Release
-  dependsOn: Build
+  dependsOn: Staging
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   jobs:
@@ -73,7 +103,7 @@ stages:
 
     variables:
       AZURE_STORAGE_ACCOUNT: developmomentum
-    
+
     strategy:
       runOnce:
         deploy:
@@ -117,3 +147,29 @@ stages:
               apikey: '$(CLOUDFLARE_API_KEY)'
               zonename: developmomentum.com
             continueOnError: true
+
+  - job: PublishToSkynet
+    displayName: Publish to Sia Skynet
+    
+    steps:
+      - download: current
+        artifact: variables
+        displayName: 'Retrieve Variables'
+
+      - powershell: |
+          $skylink = Get-Content $(Pipeline.Workspace)/variables/skylink
+          Write-Output "##vso[task.setvariable variable=skylink]$skylink"
+        displayName: 'Populate Variable'
+
+      - task: GitHubRelease@1
+        displayName: 'Tag'
+        inputs:
+          gitHubConnection: 'github.com_drmathias'
+          repositoryName: 'drmathias/developmomentum'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'userSpecifiedTag'
+          tag: '$(Build.BuildNumber)'
+          releaseNotesSource: 'inline'
+          releaseNotesInline: 'sia://$(skylink)'
+          addChangeLog: false
