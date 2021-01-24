@@ -29,7 +29,7 @@ The Sia blockchain was started back in 2014, with a vision to build a peer to pe
 
 ### Sia Skynet
 
-On 18 February 2020, Sia [announced](https://blog.sia.tech/skynet-bdf0209d6d34) Skynet, a file sharing layer built on top of Sia blockchain. Skynet allows anyone to upload their files to the Sia network, then share them via a 46 byte link. Skynet is very easy to use and integrate, making it a very effective decentralised CDN storage layer.
+On 18 February 2020, Sia [announced](https://blog.sia.tech/skynet-bdf0209d6d34) Skynet, a file sharing layer built on top of Sia blockchain. Skynet allows anyone to upload their files to the Sia network, then share them via a 46 byte link. Skynet is very easy to use and integrate, making it a very effective decentralised CDN and storage layer.
 
 ## Website decentralisation
 
@@ -93,4 +93,4 @@ In the future we may see popular CMS get built-in Sia support, in the form I jus
 
 ## Wrapping up
 
-You probably shouldn't decentralise your website just yet. But if you want to, go for it! I went ahead and made Develop Momentum available on Skynet, at [sia://AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA](https://skynet.developmomentum.com/AADNvJAVSxY8oO_4GmLussumjK4sm5JyhOt7-F9v_Z_KdA). As a storage provider, Sia is not far off from beating all the major cloud platforms in terms of speed, cost, scalability and ease of use. It is brilliantly designed and an amazing product, though it does have its shortcomings. Many years from now, we might even look back on Skynet as being the start of the decentralised web.
+You probably shouldn't decentralise your website just yet. But if you want to, go for it! As a storage provider, Sia is not far off from beating all the major cloud platforms in terms of speed, cost, scalability and ease of use. It is brilliantly designed and an amazing product, though it does have its shortcomings. Many years from now, we might even look back on Skynet as being the start of the decentralised web.

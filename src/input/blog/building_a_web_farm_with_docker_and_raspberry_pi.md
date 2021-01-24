@@ -41,14 +41,14 @@ Several ways exist to supply power to Raspberry Pi boards but by far the most co
 
 I'm going to go through the setup with the following supplies, totaling around £210, though with only 2 Pi boards it could be as cheap as £150:
 
-* 3x Raspberry Pi 4B, 1GB RAM (£105)
-* 3x 16GB Micro SD - [UK](https://amzn.to/2T4gokf) (£15)
-* 3x PoE HAT (£54)
-* 5-port PoE ethernet switch - [UK](https://amzn.to/2GJS8Ph) (£30)
-* Ethernet cables - [UK](https://amzn.to/319HoBJ) (£3)
-* 2.5mm standoffs - [UK](https://amzn.to/2Kcd0Rm) (£10)
+* 3x Raspberry Pi 4B, 1GB RAM
+* 3x 16GB Micro SD
+* 3x PoE HAT
+* 5-port PoE ethernet switch
+* Ethernet cables
+* 2.5mm standoffs
 
-First off we need to flash the operating system on to each SD card. We're going to use Raspbian Lite which you can find on the official Raspberry Pi [downloads pages](https://www.raspberrypi.org/downloads/raspbian/). Flashing the disk is very simple using [Etcher](https://www.balena.io/etcher/). Insert your SD card into a PC, run Etcher, select your downloaded OS image and select the drive on which your SD card is mounted. When you select flash the process shouldn't take more than a minute to complete.
+First off we need to flash the operating system on to each SD card. We're going to use Raspbian Lite which you can find on the official Raspberry Pi [website](https://downloads.raspberrypi.org/raspbian_lite/images/). Flashing the disk is very simple using [Etcher](https://www.balena.io/etcher/). Insert your SD card into a PC, run Etcher, select your downloaded OS image and select the drive on which your SD card is mounted. When you select flash the process shouldn't take more than a minute to complete.
 
 Once your card is flashed, create a new file on the root of the drive on which your card is mounted and name it SSH. Creating this file will allow you to connect to the device via SSH protocol, which will let you remotely access your Pi.
 

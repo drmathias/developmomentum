@@ -17,7 +17,7 @@ One of the first .NET blockchain projects was [NBitcoin](https://github.com/Meta
 
 Stratis platform is a programmable blockchain platform which allows anyone to provision a full node which can interact with either the Bitcoin or the Stratis network. Stratis is based off of NBitcoin, which I mentioned earlier, and so it supports the Bitcoin network, though that is not what we're going to focus on.
 
-We're going to focus on the Stratis network, which utilises the STRAT token and runs off of a different consensus than Bitcoin. Stratis Group is a company based in London, which is partnered with Azure and offers a BaaS (Blockchain as a Service) solution, allowing you to provision a virtual machine running a full node on Azure cloud. The STRAT token is a utility token, with its utilities being to secure sidechains, use with smart contracts (via a proxy token) and for ICO (Initial Coin Offering) contribution.
+We're going to focus on the Stratis network, which utilises the STRAX token and runs off of a separate consensus to Bitcoin. Stratis Group is a company based in London, which offers a BaaS (Blockchain as a Service) solution, allowing you to provision a virtual machine running a full node on Azure cloud. The STRAX token is a utility token, with its utilities being to secure sidechains, use with smart contracts (via a proxy token) and for ICO (Initial Coin Offering) contribution.
 
 Due to Stratis still being somewhat in the experimental phase, the technical information provided further on could change rather rapidly.
 
@@ -31,11 +31,11 @@ Smart contracts must not be deterministic, meaning that the code must be replica
 ### How Stratis implements .NET smart contracts
 Stratis currently only supports C# as a language for writing smart contracts. Smart contracts are written as a singleton type; that is they are initialized once. The initialized type exists for as long as the blockchain, therefore it essentially has an infinite lifetime. The object itself cannot use fields to store state and instead acts as a set of members which can be called, though that does not mean that the smart contracts cannot persist data.
 
-Stratis smart contracts can access a property ```PersistentState```, which provides methods to persist data to a smart contract. When this is invoked from the contract, the state is persisted to all nodes on the chain.
+Stratis smart contracts can access a property ```PersistentState```, which provides methods to persist data inside the execution of the smart contract, to the blockchain. When this is invoked from the contract, the state is persisted to all nodes on the chain.
 
-As smart contracts cannot be deterministic, there is a [whitelist](https://academy.stratisplatform.com/SmartContracts/Handbook/contracts-in-depth.html#id3) of language features and types which can be used in their creation. To validate and compile smart contracts, Stratis provides a [command line tool](https://github.com/stratisproject/Stratis.SmartContracts.Tools.Sct), that utilises Rosyln to analyse the code and compile it into bytecode.
+As smart contracts cannot be deterministic, there is a whitelist of language features and types which can be used in their creation. To validate and compile smart contracts, Stratis provides a [command line tool](https://github.com/stratisproject/Stratis.SmartContracts.Tools.Sct), that utilises Rosyln to analyse the code and compile it into bytecode.
 
-Stratis allows you to deploy smart contracts to run on their Cirrus side chain, which is connected to the main chain and utilises its own token CRS. You can exchange between STRAT and CRS and back at a rate of 1:1. CRS is used entirely for smart contracts, including for depositing to contracts and to pay fees (gas).
+Stratis allows you to deploy smart contracts to run on their Cirrus side chain, which is connected to the main chain and utilises its own token CRS. You can exchange between STRAX and CRS and back at a rate of 1:1. CRS is used entirely for smart contracts, including for depositing to contracts and to pay fees (gas).
 
 ## Writing a contract
 
@@ -43,7 +43,7 @@ Stratis allows you to deploy smart contracts to run on their Cirrus side chain, 
 
  Start off by creating a new project for your smart contract. You can install a template for this, or simply create a new empty project. Stratis have both a CLI and a VSIX template. If starting with an empty project, install the NuGet package [Stratis.SmartContracts](https://www.nuget.org/packages/Stratis.SmartContracts), which contains the tools that you need.
 
- One of the first things to note is that smart contracts restrict the language and framework features that you can use. In a smart contract, you cannot include a namespace. Create a file for your contract and define a class, with ```SmartContract.cs``` as its base.
+ One of the first things to note is that smart contracts restrict the language and framework features that you can use. In a smart contract, you cannot include a namespace. Create a file for your contract and define a class, with the type ```SmartContract``` as its base.
 
  ```csharp
 using Stratis.SmartContracts;
@@ -62,19 +62,19 @@ public class CountingContract : SmartContract
  * Structs
  * Arrays
 
-You cannot at this time use objects other than Array.
+You cannot at the time of publication use objects other than Array.
 
 ### Limiting risk
 
-One of the biggest disadvantages of smart contracts is the inherent risk of creating a new contract, due to their monetary nature. Some smart contracts can hold vast amounts of value, therefore it is critical that contracts are fully tested and peer reviewed. Rather famously, cryptocurrency wallet Parity had a bug in one of its smart contracts that froze a massive 513,774.16 ETH.
+One of the biggest disadvantages of smart contracts is the inherent risk of creating a new contract, due to their monetary nature. Some smart contracts can hold vast amounts of value, therefore it is critical that contracts are fully tested and reviewed. Rather famously, cryptocurrency wallet Parity had a bug in one of its smart contracts that froze a massive 513,774.16 ETH.
 
 Before you make up your mind and run off into the wind, remember that many businesses are currently utilising smart contracts today, with no problems whatsoever! You can protect against bugs through vigorous auditing of contracts. Think peer reviews done by everyone on your team and even external stakeholders. Such processes can significantly limit risk, to a point where it becomes acceptable for the business.
 
-Outside-in test driven development is a good practice to follow when writing smart contracts. This approach follows the pattern of writing failing unit tests for your contracts first, writing code to pass those tests, then repeating with all possible pre-conditions and scenarios in which that unit of code is executed. Another name for this common approach is red, green, refactor. The advantage of this is that it forces you to think about potential for bugs throughout the development process of a smart contract. Tests are extensive as they become the primary focus of development.
+Outside-in test driven development is a good practice to follow when writing smart contracts. This approach follows the pattern of writing failing unit tests for your contracts first, writing the code to pass those tests, then repeating with all possible pre-conditions and scenarios in which that unit of code is executed. Another name for this common approach is red, green, refactor. The advantage of this is that it forces you to think about potential for bugs throughout the development process of a smart contract. Tests are extensive as they become the primary focus of development.
 
 ### Writing tests
 
-Writing tests for smart contracts is just like writing tests for any other code. You can use whichever testing and mocking libraries you wish. Create a separate test project to contain your tests and install a mocking library of your choosing.
+Writing unit tests for smart contracts is just like writing tests for any other code. You can use whichever testing and mocking libraries you wish. Create a separate test project to contain your tests and install a mocking library of your choosing. Unit tests are the simplest way of testing smart contracts, though you can test futher by publishing your smart contracts to the testnet blockchain.
 
 In the following examples, I'll be using Moq as it is probably the most popular .NET mocking library. Set up a class to contain your tests and mock the dependencies for your smart contract.
 
@@ -150,7 +150,7 @@ Call this endpoint with a request body structured as so.
 }
 ```
 
-The parameters are passed as key-value pairings with the key being a number representing the type. Further information explaining for this can be found on [Stratis Academy](https://academy.stratisplatform.com/SmartContracts/Handbook/working-with-contracts.html#parameter-serialization). 
+The parameters are passed as key-value pairings with the key being a number representing the type. Further information explaining this can be found on [Stratis Academy](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/working-with-contracts.html#parameter-serialization). 
 
 ### Using Cirrus Core
 
