@@ -25,6 +25,19 @@ stages:
       buildConfiguration: 'Release'
 
     steps:
+    - task: replacetokens@3
+      displayName: 'Replace Variables'
+      inputs:
+        targetFiles: 'src/input/**/*'
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        useLegacyPattern: false
+        enableTelemetry: false
+  
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
