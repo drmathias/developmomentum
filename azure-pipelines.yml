@@ -28,11 +28,16 @@ stages:
     - task: replacetokens@3
       displayName: 'Replace Variables'
       inputs:
-        targetFiles: 'src/input/**/*'
+        targetFiles: |
+          src/input/**/*.html
+          src/input/**/*.cshtml
+          src/input/**/*.md
+          src/input/**/*.yml
+          src/input/**/*.json
         encoding: 'auto'
         writeBOM: true
         actionOnMissing: 'warn'
-        keepToken: false
+        keepToken: true
         tokenPrefix: '#{'
         tokenSuffix: '}#'
         useLegacyPattern: false
