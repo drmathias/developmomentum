@@ -1,11 +1,8 @@
-using System;
+namespace Blog;
 
-namespace Blog
+public static class SiteKeys
 {
-    public static class SiteKeys
-    {
-        public const string Subdomain = nameof(Subdomain);
-        
-        public const string Domain = nameof(Domain);
-    }
+    public const string Subdomain = nameof(Subdomain);
+
+    public const string Domain = nameof(Domain);
 }
