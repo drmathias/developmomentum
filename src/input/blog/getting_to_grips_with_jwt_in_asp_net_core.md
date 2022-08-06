@@ -4,15 +4,18 @@ Description: Understanding why and how to use JWT in your authentication protoco
 Thumbnail: e4956336-3662-46ae-bea2-7fd3059919c3
 Published: 2019-09-28
 Updated: 2019-09-28
+
 ---
+
 ![Security locks](../assets/images/blog/e4956336-3662-46ae-bea2-7fd3059919c3-w1920-h1440.jpg)
 
 ## Breaking down authorization
+
 JSON Web Tokens (JWT) are a highly popular and widely used component of client-server authentication. The idea behind JWT is to provide a simple and secure method of exchanging data which can be verified to have been untampered and created by a known party. A JWT is made up of three parts:
 
-* Header - contains metadata about the token
-* Payload - this is a set of 'claims' about the requestor
-* Signature - a signed combination of the header, payload and secret
+- Header - contains metadata about the token
+- Payload - this is a set of 'claims' about the requestor
+- Signature - a signed combination of the header, payload and secret
 
 When talking about authentication and JWT you will encounter some jargon such as 'claim'. A claim is simply a key-value pairing of data defined by the requestor.
 
@@ -24,9 +27,13 @@ Often JWT are used along with a protocol such as OAuth 2.0, usually being genera
 
 When sending requests over HTTP which require authorisation, a token is most often sent in the Authorization header. For JWT tokens, the header will be in the format of:
 
+<?# highlight http ?>
+
 ```http
 Authorization: Bearer {token}
 ```
+
+<?#/ highlight ?>
 
 It is important to only send tokens over secure connections.
 
@@ -34,11 +41,17 @@ In ASP.NET Core, HTTP request authorisation can be set up to read a token from t
 
 Microsoft provides a [package](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/) that you can include, to authenticate JWT in your application.
 
+<?# highlight xml ?>
+
 ```xml
 <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
 ```
 
+<?#/ highlight ?>
+
 Next, set up the authentication middleware to validate tokens for incoming requests.
+
+<?# highlight csharp ?>
 
 ```csharp
 // parameter sets default scheme
@@ -59,6 +72,8 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 ```
 
+<?#/ highlight ?>
+
 This is a very basic validation setup, however additional configuration can be made. For instance, it is strongly advisable to validate token lifetime, so that requests containing expired tokens are rejected. Have a look through the properties that you can set on `TokenValidationParameters`, as they will probably need to be configured according to your particular scenario.
 
 Make sure that you are accessing the token secret from encrypted storage!
@@ -69,11 +84,17 @@ One common scenario where authorisation is implemented is in a RESTful API. You 
 
 Firstly, include the Swashbuckle package into the startup project.
 
+<?# highlight xml ?>
+
 ```xml
 <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.1" />
 ```
 
-Using the built in dependency injection container, add the OpenAPI specification generation middleware, allowing definition of authorisation protocols. Make sure to call ```IApplicationBuilder.UseSwagger()``` to invoke the middleware. 
+<?#/ highlight ?>
+
+Using the built in dependency injection container, add the OpenAPI specification generation middleware, allowing definition of authorisation protocols. Make sure to call `IApplicationBuilder.UseSwagger()` to invoke the middleware.
+
+<?# highlight csharp ?>
 
 ```csharp
 services.AddSwaggerGen(options =>
@@ -102,7 +123,12 @@ services.AddSwaggerGen(options =>
     });
 });
 ```
+
+<?#/ highlight ?>
+
 The generated API document will include these sections. Once again, if using JWT with a security protocol such as OAuth 2.0 or OpenID Connect, it is important to provide additional configuration.
+
+<?# highlight json ?>
 
 ```json
 {
@@ -126,13 +152,17 @@ The generated API document will include these sections. Once again, if using JWT
 }
 ```
 
+<?#/ highlight ?>
+
 If using Swagger UI, you will now see a padlock button next to each defined endpoint. Clicking this button and providing a JWT will ensure it is sent in the header of any request that is made through the UI.
 
 ![Swagger UI token prompt](../assets/images/blog/content/1748cc9c-9ea0-47b8-a110-ad3a114408d1.png)
 
 ### Integrating with SignalR
 
-Authorisation with JWT can happen over SignalR connections. This is configured in the authorisation middleware, by assigning a custom handler for the ```OnMessageReceived``` event. In the handler we can access ```OnMessageReceivedContext```, which contains a reference to the HTTP request and also allows us to explicitly set the token. This snippet was originally taken from [Microsoft documentation](https://docs.microsoft.com/en-us/aspnet/core/signalr/authn-and-authz?view=aspnetcore-3.0#authorize-users-to-access-hubs-and-hub-methods) which goes into further detail regarding SignalR authorisation.
+Authorisation with JWT can happen over SignalR connections. This is configured in the authorisation middleware, by assigning a custom handler for the `OnMessageReceived` event. In the handler we can access `OnMessageReceivedContext`, which contains a reference to the HTTP request and also allows us to explicitly set the token. This snippet was originally taken from [Microsoft documentation](https://docs.microsoft.com/en-us/aspnet/core/signalr/authn-and-authz?view=aspnetcore-3.0#authorize-users-to-access-hubs-and-hub-methods) which goes into further detail regarding SignalR authorisation.
+
+<?# highlight csharp ?>
 
 ```csharp
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -159,24 +189,36 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 ```
 
+<?#/ highlight ?>
+
 ### Creating a JWT
 
-Many packages exist which make creating a JWT in .NET Core 3.X relatively simple, so you have some choice. I'm going to focus on how to create a token with the use of [this](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/) package, developed by the Microsoft Azure Active Directory team. The package includes ```JwtSecurityToken``` class, which comprises all the members of a JWT and offers several constructors to help you create a token.
+Many packages exist which make creating a JWT in .NET Core 3.X relatively simple, so you have some choice. I'm going to focus on how to create a token with the use of [this](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/) package, developed by the Microsoft Azure Active Directory team. The package includes `JwtSecurityToken` class, which comprises all the members of a JWT and offers several constructors to help you create a token.
+
+<?# highlight xml ?>
 
 ```xml
 <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
 ```
 
-First off we need to create a ```SigningCredentials``` object containing the secret and the signing algorithm. Decide what signing algorithm you require and how to store and retrieve the secret. We can simply store this secret in the source code, or in the application settings, however this introduces vulnerabilities as it allows anyone with the ability to access the source code to access the secret. To get around this, it is important to use a secure storage mechanism where the secret itself is encrypted. This can be through the use of something like Docker secrets, if using Docker Swarm for deployment, or a service such as Azure Key Vault. No matter how the secret is stored, you can set it up to be accessible from the generic `IConfiguration` interface during runtime, or make it accessible via the options pattern.
+<?#/ highlight ?>
+
+First off we need to create a `SigningCredentials` object containing the secret and the signing algorithm. Decide what signing algorithm you require and how to store and retrieve the secret. We can simply store this secret in the source code, or in the application settings, however this introduces vulnerabilities as it allows anyone with the ability to access the source code to access the secret. To get around this, it is important to use a secure storage mechanism where the secret itself is encrypted. This can be through the use of something like Docker secrets, if using Docker Swarm for deployment, or a service such as Azure Key Vault. No matter how the secret is stored, you can set it up to be accessible from the generic `IConfiguration` interface during runtime, or make it accessible via the options pattern.
 
 Create and sign the key by retrieving the secret from your application configuration. You can read on for a further explanation of Symmetric versus Asymmetric keys and different security algorithms for signing the key, of which there are many.
+
+<?# highlight csharp ?>
 
 ```csharp
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secret"]));
 var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 ```
 
-Along with the key you need to create the payload. For this, you need to create an array of claims to store in the token. A claim simply consists of a key-value pair and you can create standard claims, defined by [IETF](https://tools.ietf.org/html/rfc7519) and also custom claims. Standard claim names are stored as constants in the ```JwtRegisteredClaimNames``` class.
+<?#/ highlight ?>
+
+Along with the key you need to create the payload. For this, you need to create an array of claims to store in the token. A claim simply consists of a key-value pair and you can create standard claims, defined by [IETF](https://tools.ietf.org/html/rfc7519) and also custom claims. Standard claim names are stored as constants in the `JwtRegisteredClaimNames` class.
+
+<?# highlight csharp ?>
 
 ```csharp
 var userIdentifierClaim = new Claim(JwtRegisteredClaimNames.Sub, "Reader");
@@ -185,7 +227,11 @@ var customPlanetClaim = new Claim("planet", "Jupiter");
 var claims = new Claim[] { userIdentifierClaim, issuerClaim, customPlanetClaim };
 ```
 
+<?#/ highlight ?>
+
 With the claims and the key created, you can construct the JWT. As the header of a JWT only contains metadata about the key, you do not need to explicitly set this. It will already be set based on what is passed in as the payload and the key.
+
+<?# highlight csharp ?>
 
 ```csharp
 var token = new JwtSecurityToken(
@@ -194,11 +240,17 @@ var token = new JwtSecurityToken(
 );
 ```
 
-Now that you have the token stored in an object, you will probably want to do the final step of retrieving the JWT as a string. You might think that calling ```JwtSecurityToken.ToString()``` will do this, however it only serialises the header and the payload and will not create a signed token. To create the signed token you need to create an instance of the ```JwtSecurityTokenHandler``` class, which contains a method to write the token to a string.
+<?#/ highlight ?>
+
+Now that you have the token stored in an object, you will probably want to do the final step of retrieving the JWT as a string. You might think that calling `JwtSecurityToken.ToString()` will do this, however it only serialises the header and the payload and will not create a signed token. To create the signed token you need to create an instance of the `JwtSecurityTokenHandler` class, which contains a method to write the token to a string.
+
+<?# highlight csharp ?>
 
 ```csharp
 var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 ```
+
+<?#/ highlight ?>
 
 ## Algorithms for signing JWTs
 
@@ -209,7 +261,6 @@ In the examples shown so far, all the tokens which are created and validated are
 A symmetric algorithm uses a single secret which is used for encryption of data. Therefore both the sending and receiving party require knowledge of the same secret to be able to securely share the data. This makes it especially good for securing communication between two services which are both under your control. This includes a setup where you have an authentication server which a user calls, returning a token that is signed with a secret and validated by your service with the same secret. In almost all cases which require token authentication, a symmetric algorithm will be adequate.
 
 ![Symmetric encryption process diagram](../assets/images/blog/content/fed0e592-d063-497b-9a3b-2bfc29b04d1a.jpg)
-
 
 ### Asymmetric algorithms
 

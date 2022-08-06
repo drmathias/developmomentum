@@ -4,7 +4,9 @@ Description: Smart contracts are perfect for integrating automated, trustless fi
 Thumbnail: 2a40df99-1847-4726-9c5b-af4779eeb667
 Published: 2019-12-18
 Updated: 2019-12-18
+
 ---
+
 ![Stratis logo](../assets/images/blog/2a40df99-1847-4726-9c5b-af4779eeb667-w1920-h1440.jpg)
 
 ## Blockchain in .NET
@@ -24,14 +26,16 @@ Due to Stratis still being somewhat in the experimental phase, the technical inf
 ## Smart contracts
 
 ### How they work
+
 Smart contracts are bytecode that is invoked by transactions on the chain. Smart contracts have an address which is unique to them on the network, allowing them to interact with peers. Transactions that are broadcast with the contract as the recipient, alter the state of the contract, which is persisted between every node on the blockchain.
 
 Smart contracts must not be deterministic, meaning that the code must be replicable on every machine to produce the same result. This comes with limitations in terms of features which are available when writing smart contracts, for example, you cannot use time constructs or floating point representation of numbers directly in code.
 
 ### How Stratis implements .NET smart contracts
+
 Stratis currently only supports C# as a language for writing smart contracts. Smart contracts are written as a singleton type; that is they are initialized once. The initialized type exists for as long as the blockchain, therefore it essentially has an infinite lifetime. The object itself cannot use fields to store state and instead acts as a set of members which can be called, though that does not mean that the smart contracts cannot persist data.
 
-Stratis smart contracts can access a property ```PersistentState```, which provides methods to persist data inside the execution of the smart contract, to the blockchain. When this is invoked from the contract, the state is persisted to all nodes on the chain.
+Stratis smart contracts can access a property `PersistentState`, which provides methods to persist data inside the execution of the smart contract, to the blockchain. When this is invoked from the contract, the state is persisted to all nodes on the chain.
 
 As smart contracts cannot be deterministic, there is a whitelist of language features and types which can be used in their creation. To validate and compile smart contracts, Stratis provides a [command line tool](https://github.com/stratisproject/Stratis.SmartContracts.Tools.Sct), that utilises Rosyln to analyse the code and compile it into bytecode.
 
@@ -41,26 +45,30 @@ Stratis allows you to deploy smart contracts to run on their Cirrus side chain, 
 
 ### SmartContract.cs
 
- Start off by creating a new project for your smart contract. You can install a template for this, or simply create a new empty project. Stratis have both a CLI and a VSIX template. If starting with an empty project, install the NuGet package [Stratis.SmartContracts](https://www.nuget.org/packages/Stratis.SmartContracts), which contains the tools that you need.
+Start off by creating a new project for your smart contract. You can install a template for this, or simply create a new empty project. Stratis have both a CLI and a VSIX template. If starting with an empty project, install the NuGet package [Stratis.SmartContracts](https://www.nuget.org/packages/Stratis.SmartContracts), which contains the tools that you need.
 
- One of the first things to note is that smart contracts restrict the language and framework features that you can use. In a smart contract, you cannot include a namespace. Create a file for your contract and define a class, with the type ```SmartContract``` as its base.
+One of the first things to note is that smart contracts restrict the language and framework features that you can use. In a smart contract, you cannot include a namespace. Create a file for your contract and define a class, with the type `SmartContract` as its base.
 
- ```csharp
+<?# highlight csharp ?>
+
+```csharp
 using Stratis.SmartContracts;
 
 public class CountingContract : SmartContract
 {
-    public CountingContract(ISmartContractState smartContractState) : base(smartContractState)
-    {
-    }
+   public CountingContract(ISmartContractState smartContractState) : base(smartContractState)
+   {
+   }
 }
- ```
+```
 
- The ```SmartContract``` base class contains members which you might want to access in your smart contract. When writing smart contracts, there are some things to keep in mind. Firstly, any value of CRS is represented in CRS sats (100 millionth of a CRS), which is especially important if your contract is for a financial purpose. Another point is that smart contracts are limited to using only the following types:
+<?#/ highlight ?>
 
- * Primitive types
- * Structs
- * Arrays
+The `SmartContract` base class contains members which you might want to access in your smart contract. When writing smart contracts, there are some things to keep in mind. Firstly, any value of CRS is represented in CRS sats (100 millionth of a CRS), which is especially important if your contract is for a financial purpose. Another point is that smart contracts are limited to using only the following types:
+
+- Primitive types
+- Structs
+- Arrays
 
 You cannot at the time of publication use objects other than Array.
 
@@ -78,6 +86,8 @@ Writing unit tests for smart contracts is just like writing tests for any other 
 
 In the following examples, I'll be using Moq as it is probably the most popular .NET mocking library. Set up a class to contain your tests and mock the dependencies for your smart contract.
 
+<?# highlight csharp ?>
+
 ```csharp
 public class CountingContractTests
 {
@@ -92,6 +102,8 @@ public class CountingContractTests
 }
 ```
 
+<?#/ highlight ?>
+
 ### Examples
 
 You can see examples of smart contracts that were written for the Stratis hackathon, by navigating to the [hackathon submission page](https://stratisplatform.devpost.com/submissions).
@@ -104,9 +116,13 @@ Smart contracts can be deployed via the API, through the Cirrus Core wallet UI o
 
 Clone the [tool](https://github.com/stratisproject/Stratis.SmartContracts.Tools.Sct) onto your machine and open the command line. Navigate to the directory of the cloned project and run the following command.
 
+<?# highlight sh ?>
+
 ```shell
 dotnet run --validate [pathToContract.cs] -sb
 ```
+
+<?#/ highlight ?>
 
 If the contract is invalid, this will display a trace that details the error, allowing you to easily resolve it. For a valid contract, you will see byte code output to the console, which you need to copy to deploy the contract.
 
@@ -114,13 +130,13 @@ If the contract is invalid, this will display a trace that details the error, al
 
 Along with the bytecode of the smart contract, deployment requires several parameters to be set.
 
-* Wallet name - This is the name of the wallet which contains the address that you want to deploy the smart contract from.
-* Amount - The amount of CRS you want to send to the contract on deployment.
-* Fee - Transaction fee you want to pay.
-* Password - The password for accessing the wallet.
-* Gas price - Price you pay for smart contract execution cost measure, gas. The gas price equates to the CRS cost / gas.
-* Gas limit - Maximum amount of gas you want to spend on the call, before it fails.
-* Sender - Address you wish to use for the transaction to deploy the contract.
+- Wallet name - This is the name of the wallet which contains the address that you want to deploy the smart contract from.
+- Amount - The amount of CRS you want to send to the contract on deployment.
+- Fee - Transaction fee you want to pay.
+- Password - The password for accessing the wallet.
+- Gas price - Price you pay for smart contract execution cost measure, gas. The gas price equates to the CRS cost / gas.
+- Gas limit - Maximum amount of gas you want to spend on the call, before it fails.
+- Sender - Address you wish to use for the transaction to deploy the contract.
 
 When deploying a contract in another contract, you only have to manually set the gas limit and the amount.
 
@@ -128,11 +144,17 @@ When deploying a contract in another contract, you only have to manually set the
 
 The web API includes an endpoint that can be called to create a smart contract.
 
+<?# highlight http ?>
+
 ```http
 POST /api/SmartContractWallet/create HTTP/1.1
 ```
 
+<?#/ highlight ?>
+
 Call this endpoint with a request body structured as so.
+
+<?# highlight json ?>
 
 ```json
 {
@@ -150,7 +172,9 @@ Call this endpoint with a request body structured as so.
 }
 ```
 
-The parameters are passed as key-value pairings with the key being a number representing the type. Further information explaining this can be found on [Stratis Academy](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/working-with-contracts.html#parameter-serialization). 
+<?#/ highlight ?>
+
+The parameters are passed as key-value pairings with the key being a number representing the type. Further information explaining this can be found on [Stratis Academy](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/working-with-contracts.html#parameter-serialization).
 
 ### Using Cirrus Core
 
@@ -160,15 +184,17 @@ Cirrus Core allows you to create smart contracts through the UI. Navigate to the
 
 ### Inside a contract
 
-Smart contracts can deploy other contracts, potentially opening up interesting use cases. This is done simply by calling ```Create<T:SmartContract>(ulong amount, object[] params, ulong gasLimit)``` which will require a reference to the smart contract. 
+Smart contracts can deploy other contracts, potentially opening up interesting use cases. This is done simply by calling `Create<T:SmartContract>(ulong amount, object[] params, ulong gasLimit)` which will require a reference to the smart contract.
 
 ## Saving gas
 
 ### Contract logging
 
-When developing an application which interacts with a smart contract, it is important to be able to minimise fees which are incurred when doing so. Stratis smart contracts have the ```Log<T:struct>(T)``` method, which enables you to log data that can be queried using the API of the full node. Querying logged data does not cost gas and therefore this is very useful when you want to store metadata for a contract.
+When developing an application which interacts with a smart contract, it is important to be able to minimise fees which are incurred when doing so. Stratis smart contracts have the `Log<T:struct>(T)` method, which enables you to log data that can be queried using the API of the full node. Querying logged data does not cost gas and therefore this is very useful when you want to store metadata for a contract.
 
 Lets say that you want to store some details for your contract, specifically an id, name, company and author, that a third party can query and display. You are able to create a struct type to contain this data.
+
+<?# highlight csharp ?>
 
 ```csharp
 public struct Details
@@ -180,7 +206,11 @@ public struct Details
 }
 ```
 
+<?#/ highlight ?>
+
 At the time of contract creation, this can be passed into the constructor. Unfortunately as of yet, it is not allowed to pass a struct as a parameter on a smart contract directly. You have the option of either passing the primitive types to the contract individually, or passing a serialized struct that you deserialize in the contract.
+
+<?# highlight csharp ?>
 
 ```csharp
 public CountingContract(ISmartContractState smartContractState, byte[] serializedDetails)
@@ -189,6 +219,8 @@ public CountingContract(ISmartContractState smartContractState, byte[] serialize
     Log(Serializer.ToStruct<Details>(serializedDetails));
 }
 ```
+
+<?#/ highlight ?>
 
 ### Minimum effort
 
@@ -205,14 +237,19 @@ The process for interacting with a contract is split into two stages:
 1. Creating a transaction to call a method
 2. Reading the return value from the receipt
 
-
 The API has an OpenAPI specification which you can use to determine the endpoints that you can call. In what appears to be v2 of the API, you can call the following endpoint to invoke a method on the smart contract.
+
+<?# highlight http ?>
 
 ```http
 POST /api/contract/{contractAddress}/method/{methodName} HTTP/1.1
 ```
 
+<?#/ highlight ?>
+
 A successful HTTP request to this endpoint returns a result with the following structure:
+
+<?# highlight json ?>
 
 ```json
 {
@@ -224,15 +261,23 @@ A successful HTTP request to this endpoint returns a result with the following s
 }
 ```
 
+<?#/ highlight ?>
+
 We only really care about the transaction ID, as this is what is used to read the receipt.
+
+<?# highlight http ?>
 
 ```http
 GET /api/SmartContracts/receipt?txHash=5a71be426c5d6e3f70efc3a304bfe783f0466531c69715f209c46480cd0f1d6a HTTP/1.1
 ```
 
+<?#/ highlight ?>
+
 Until the next block is mined, this will return a HTTP 400 status code. At this time, the only option available to be notified when the receipt becomes available, is to poll a request until the next block is mined.
 
 Once the block is mined, it will return you a 200 OK result, with a receipt of the transaction that has the following structure, and which contains a return value that you can read.
+
+<?# highlight json ?>
 
 ```json
 {
@@ -251,15 +296,23 @@ Once the block is mined, it will return you a 200 OK result, with a receipt of t
 }
 ```
 
+<?#/ highlight ?>
+
 ### Accessing logged data
 
 Logged data can be accessed from calling the full node API, to read the receipts of the contracts.
+
+<?# highlight http ?>
 
 ```http
 GET /api/SmartContracts/receipt-search?contractAddress=&eventName= HTTP/1.1
 ```
 
-The query parameter ```eventName``` is the name of the logged struct type. Calling this will return an array of logged receipts, with a structure like the one below.
+<?#/ highlight ?>
+
+The query parameter `eventName` is the name of the logged struct type. Calling this will return an array of logged receipts, with a structure like the one below.
+
+<?# highlight json ?>
 
 ```json
 [
@@ -278,9 +331,7 @@ The query parameter ```eventName``` is the name of the logged struct type. Calli
     "logs": [
       {
         "address": "CKBvEJbWqYqjqE5sF3aAcqHbLTr1CsF4F7",
-        "topics": [
-          "53686F77"
-        ],
+        "topics": ["53686F77"],
         "data": "F1294772656174657374204869747320546F75728B5269636B204173746C65798828EA9D5E0000000088C8AF000000000000",
         "log": {
           "id": "53",
@@ -294,8 +345,10 @@ The query parameter ```eventName``` is the name of the logged struct type. Calli
 ]
 ```
 
+<?#/ highlight ?>
+
 Receipts are returned in block height order.
 
 ## Further reading
 
-You can find more information on the [Stratis platform website](https://stratisplatform.com/developers/), which includes resources and links to help you out. 
+You can find more information on the [Stratis platform website](https://stratisplatform.com/developers/), which includes resources and links to help you out.

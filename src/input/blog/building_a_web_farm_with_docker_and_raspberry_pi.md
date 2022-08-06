@@ -4,7 +4,9 @@ Description: This was inspired by the fact that the Raspberry Pi launch site was
 Thumbnail: 823a7764-af7c-4687-a42e-bd70768068ab
 Published: 2019-08-10
 Updated: 2019-08-10
+
 ---
+
 ![Raspberry Pi web farm](../assets/images/blog/823a7764-af7c-4687-a42e-bd70768068ab-w1920-h1440.jpg)
 
 ## Components of a web farm
@@ -41,22 +43,26 @@ Several ways exist to supply power to Raspberry Pi boards but by far the most co
 
 I'm going to go through the setup with the following supplies, totaling around £210, though with only 2 Pi boards it could be as cheap as £150:
 
-* 3x Raspberry Pi 4B, 1GB RAM
-* 3x 16GB Micro SD
-* 3x PoE HAT
-* 5-port PoE ethernet switch
-* Ethernet cables
-* 2.5mm standoffs
+- 3x Raspberry Pi 4B, 1GB RAM
+- 3x 16GB Micro SD
+- 3x PoE HAT
+- 5-port PoE ethernet switch
+- Ethernet cables
+- 2.5mm standoffs
 
 First off we need to flash the operating system on to each SD card. We're going to use Raspbian Lite which you can find on the official Raspberry Pi [website](https://downloads.raspberrypi.org/raspbian_lite/images/). Flashing the disk is very simple using [Etcher](https://www.balena.io/etcher/). Insert your SD card into a PC, run Etcher, select your downloaded OS image and select the drive on which your SD card is mounted. When you select flash the process shouldn't take more than a minute to complete.
 
 Once your card is flashed, create a new file on the root of the drive on which your card is mounted and name it SSH. Creating this file will allow you to connect to the device via SSH protocol, which will let you remotely access your Pi.
 
+<?# highlight powershell ?>
+
 ```powershell
 New-Item $drive/SSH -type file
 ```
 
-The next step is to set up the hardware, which involves attaching the PoE HATs to the boards, inserting the cards into the micro SD slots, connecting the PoE HATs to the ethernet switch and connecting the ethernet switch to your router. I like to use spacers to secure the boards to one another, but you can get a specialised case kit if you want, although I'm not sure whether you'd be able to use them with PoE HATs. 
+<?#/ highlight ?>
+
+The next step is to set up the hardware, which involves attaching the PoE HATs to the boards, inserting the cards into the micro SD slots, connecting the PoE HATs to the ethernet switch and connecting the ethernet switch to your router. I like to use spacers to secure the boards to one another, but you can get a specialised case kit if you want, although I'm not sure whether you'd be able to use them with PoE HATs.
 
 ## Preparing the Pi
 
@@ -70,15 +76,15 @@ To connect to the Pi you will need its local IP address and an SSH client, such 
 
 Note that Windows 10 already comes with OpenSSH included, meaning you will not have to install any additional software. You should be able to use `ssh` command from the command line.
 
-Open the connection and a terminal displaying a login prompt will appear. The default credentials for Raspbian are ```pi``` as the username and ```raspberry``` as the password.
+Open the connection and a terminal displaying a login prompt will appear. The default credentials for Raspbian are `pi` as the username and `raspberry` as the password.
 
 ![Terminal login](../assets/images/blog/content/17343f27-a62f-4193-a0e5-4190d948eb2e.png)
 
-Once connected to the Pi you should do several things, including changing the password, setting up a hostname and updating the software. To change the password and update the hostname, along with accessing many other useful configuration settings, run the command ```sudo raspi-config``` which will open up a configuration menu.
+Once connected to the Pi you should do several things, including changing the password, setting up a hostname and updating the software. To change the password and update the hostname, along with accessing many other useful configuration settings, run the command `sudo raspi-config` which will open up a configuration menu.
 
 ![Raspbian config](../assets/images/blog/content/39374de9-f24a-46f6-9955-982687607c6d.png)
 
-Running ```sudo apt update``` and ```sudo apt upgrade``` will update all of the software on the Pi and from there you will be prepared to install the software required to configure your web farm.
+Running `sudo apt update` and `sudo apt upgrade` will update all of the software on the Pi and from there you will be prepared to install the software required to configure your web farm.
 
 ### Installing Docker
 
@@ -86,21 +92,31 @@ When it comes to deploying your application, Docker is a lifesaver, although on 
 
 Docker has an installation guide which you could follow, though you should simply be able to run this command which will do all the work for you.
 
+<?# highlight sh ?>
+
 ```shell
 $ curl -sSL https://get.docker.com/ | sh
 ```
 
+<?#/ highlight ?>
+
 Once that is done you can add the user to the docker group to allow you to run docker commands without sudo.
+
+<?# highlight sh ?>
 
 ```shell
 $ sudo usermod -aG docker $USER
 ```
 
-You can test that this has worked by running the ```docker info``` command, which will give you some information about your docker installation. Install Docker on each one of your Pi boards as you will later create an image for your web application, which you will be able to pull on to each board and run your application in a container.
+<?#/ highlight ?>
+
+You can test that this has worked by running the `docker info` command, which will give you some information about your docker installation. Install Docker on each one of your Pi boards as you will later create an image for your web application, which you will be able to pull on to each board and run your application in a container.
 
 ### Installing Docker Compose
 
 Although not necessary, Docker Compose is a useful tool for configuring containers for a device. My favourite approach to using Docker Compose is by running it as a container, although unfortunately (as an example of what I mentioned earlier) the official image does not support ARM. Therefore, the easiest way to run Docker Compose on the Pi is installing it via pip.
+
+<?# highlight sh ?>
 
 ```shell
 $ sudo apt update
@@ -108,13 +124,19 @@ $ sudo apt install -y python python-pip libffi-dev python-backports.ssl-match-ho
 $ sudo pip install docker-compose
 ```
 
+<?#/ highlight ?>
+
 ### Installing Git
 
 With the approach I'm taking you through here, Git will be necessary as a part of the process of deploying our web application.
 
+<?# highlight sh ?>
+
 ```shell
 $ sudo apt-get install git
 ```
+
+<?#/ highlight ?>
 
 We will use Git to pull our configuration files on to the machines as it is simple to use and we can source control them.
 
@@ -128,7 +150,9 @@ When it comes to running a SQL server, there are limitations due to limited supp
 
 ### Running MariaDB with Docker
 
-By using the image for MariaDB linked above, we can configure a SQL server to run in a container on one of our Pi boards. It is possible to specify configuration parameters in the Docker ```run``` command though I find using the YAML syntax of Docker Compose more convenient. I suggest you create this Docker Compose file and commit it to a Git repo, so that you can easily version control it and clone it on to your Pi to build.
+By using the image for MariaDB linked above, we can configure a SQL server to run in a container on one of our Pi boards. It is possible to specify configuration parameters in the Docker `run` command though I find using the YAML syntax of Docker Compose more convenient. I suggest you create this Docker Compose file and commit it to a Git repo, so that you can easily version control it and clone it on to your Pi to build.
+
+<?# highlight yaml ?>
 
 ```yaml
 version: "3"
@@ -149,6 +173,8 @@ services:
     restart: unless-stopped
 ```
 
+<?#/ highlight ?>
+
 In this configuration several parameters are of note. The environmental variables contain PUID and PGID variables. These do not need to concern you unless using volumes, in which case the image description details what they need to be. Generally you will want to set them to 1000 anyway. The TZ variable specifies the time zone of the container, which you will want to set it to your local time zone. The rest of the environmental variable will configure your database credentials and should be self-descriptive.
 
 If you don't have much experience with Docker, you might be wondering what the ports configuration is for. The ports configuration maps an external port on the machine to an internal port on the container. Above we are mapping port 3306 on the Pi to port 3306 in the container, which is exposed in the MariaDB image.
@@ -159,13 +185,15 @@ With this configuration ready, the connection string in the web application need
 Server=192.168.1.180;Port=3306;Database=DatabaseName;Uid=DatabaseUser;Pwd=DatabaseUserPassword;SslMode=Preferred;
 ```
 
-Get the Docker Compose file on to your Pi and run ```docker-compose up``` to create and start a container. You are now able to connect to your database server and run SQL commands.
+Get the Docker Compose file on to your Pi and run `docker-compose up` to create and start a container. You are now able to connect to your database server and run SQL commands.
 
 ## Setting up a load balancer
 
 ### LetsEncrypt Nginx
 
 Generating an SSL certificate for your website can be automated by Certbot, which generates a certificate issued by LetsEncrypt. This can be run in a container, although unfortunately the official Certbot image does not support ARM. There is an alternative using Docker. LinuxServer community maintains an [image](https://hub.docker.com/r/linuxserver/letsencrypt/) for an Nginx server with Certbot running. As there is a little bit of configuration to do, using Docker Compose makes setting this up much easier.
+
+<?# highlight yaml ?>
 
 ```yaml
 version: "3"
@@ -193,9 +221,13 @@ services:
     restart: unless-stopped
 ```
 
+<?#/ highlight ?>
+
 Many environmental variables can be set running this container, mainly for the configuration of Certbot. The URL and subdomains provided set the URL for the certificate. When accessing the application, the browser looks at the certificate URL and validates against the URL which returned it. You must provide a method of certificate validation, the simplest of which is HTTP validation but the most comprehensive DNS validation, as it allows you to create a wildcard certificate covering any subdomain.
 
 Nginx server configuration for the container is done by mounting conf files to the /config/nginx/site-confs directory. The image sets a default configuration for Nginx but we want to override this when accessing the load balancer via our domain names. We're mapping both ports 80 and 443 in the container, although we want all traffic to be SSL encrypted. Create the following file yourdomainname.conf and configure it to listen on ports 80 and 443, redirecting all HTTP traffic over port 80 to port 443.
+
+<?# highlight nginx ?>
 
 ```nginx
 # list web application server IPs
@@ -231,6 +263,8 @@ server {
     }
 }
 ```
+
+<?#/ highlight ?>
 
 ### What's left to do?
 

@@ -72,6 +72,8 @@ The pipeline definition contains a trigger, which is the branch that is monitore
 
 You may notice that the template contains definitions for steps, but not stages or jobs. This is because if you only have one stage and one job, you do not need to explicitly define them in the pipeline. Start off by removing all the steps and define the stages and jobs that you have planned out. I also like to define the artifact name(s) as variables, for the artifacts that I will be creating to transfer files between each stage.
 
+<?# highlight yaml ?>
+
 ```yaml
 trigger:
   - master
@@ -99,6 +101,8 @@ stages:
         displayName: Deploy to Azure Storage
 ```
 
+<?#/ highlight ?>
+
 Stages will run in parallel, unless they are defined as having a dependency on another stage. You are able to define conditions for each stage to run. The default condition is that their dependant stages completed successfully.
 
 ### The Build stage
@@ -106,6 +110,8 @@ Stages will run in parallel, unless they are defined as having a dependency on a
 Having connected your repository, for standard jobs, the agent will copy your code into the `\s` directory and set that as the working directory. Therefore, the first thing you need to consider is the installation of build dependencies. Azure-hosted agents already have a lot of software installed, meaning you might not need to define any steps for this. You can view the included software by clicking the links in the agents table on the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software).
 
 In this example, I'll be building a static website using .NET Core and Statiq, therefore I need to perform the CLI commands `dotnet restore`, `dotnet build` then `dotnet run`. Azure pipelines comes with a task `DotNetCoreCLI`, which I will use. For each task, I need to provide the project path, which can be placed in a variable. Statiq only outputs files if the working directory is set to the directory containing the input folder, so this needs to be defined in the task. Something that I didn't realise at first, was even with the working directory defined, the project path in the `DotNetCoreCLI@2` task must be defined relative to the `\s` directory.
+
+<?# highlight yaml ?>
 
 ```yaml
 - job: Transform
@@ -136,7 +142,11 @@ In this example, I'll be building a static website using .NET Core and Statiq, t
         workingDirectory: "src"
 ```
 
+<?#/ highlight ?>
+
 Now we need to publish the artifact, which is the output folder that Statiq generates. Generally, artifacts should be staged before being published, which involves copying them to the `\a` directory. You should do this with the `CopyFiles` task, which takes the source and target folders as parameters. Publishing artifacts can be done with either the `PublishBuildArtifacts` or `PublishPipelineArtifact` task, yet it is recommended to use pipeline artifacts, as they are intended as a replacement to build artifacts.
+
+<?# highlight yaml ?>
 
 ```yaml
 - task: CopyFiles@2
@@ -153,6 +163,8 @@ Now we need to publish the artifact, which is the output folder that Statiq gene
     artifact: "$(ARTIFACT_NAME)"
     publishLocation: "pipeline"
 ```
+
+<?#/ highlight ?>
 
 ### The Release stage
 
@@ -171,6 +183,8 @@ To finish, we need to define the deployment strategy, which is a process that ca
 
 There are three different deployment strategies, though the only one you need to be concerned about is `runOnce`. This strategy is the simplest of the three, as it runs each stage of deployment one time per build.
 
+<?# highlight yaml ?>
+
 ```yaml
 jobs:
   - deployment: DeployToStorage
@@ -181,7 +195,11 @@ jobs:
       runOnce:
 ```
 
+<?#/ highlight ?>
+
 In my example case, the website needs to be deployed to Azure Storage, which involves deleting the old files then copying the new files to the storage container. The website uses Azure CDN and Cloudflare as a DNS provider, both of which cache the website. These caches need to be cleared on every deployment, so that traffic is served correctly.
+
+<?# highlight yaml ?>
 
 ```yaml
 variables:
@@ -226,11 +244,13 @@ strategy:
         - task: tfx-cloudflare-purge@1
         displayName: 'Purge Cloudflare Cache'
         inputs:
-            username: 'adamshirt@outlook.com'
+            username: 'adam.shirt@developmomentum.com'
             apikey: '$(CLOUDFLARE_API_KEY)'
             zonename: developmomentum.com
         continueOnError: true
 ```
+
+<?#/ highlight ?>
 
 In my definition, I'm using an Azure CLI task, which takes an inline script. Scripts and script based tasks can include variables and Azure pipelines will automatically convert them into environmental variables, which will be passed into the script.
 

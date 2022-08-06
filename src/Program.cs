@@ -2,6 +2,7 @@
 using Statiq.Common;
 using Statiq.Web;
 using Statiq.Images;
+using Statiq.Highlight;
 using System.Threading.Tasks;
 
 namespace Blog
@@ -33,6 +34,7 @@ namespace Blog
                 .AddSetting(WebKeys.OptimizeContentFileNames, false)
                 .AddSetting(WebKeys.GenerateSitemap, true)
                 .AddSetting(WebKeys.GatherHeadingsLevel, 3)
+                .AddShortcode<HighlightShortcode>()
                 .BuildPipeline("ResizeTitleImages", builder =>
                 {
                     builder.WithInputReadFiles("assets/images/blog/*.{jpg,png,gif}");

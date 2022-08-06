@@ -175,7 +175,7 @@ p img {
 }
 
 pre, code {
-    background: var(--color-depth);
+    background: var(--color-depth) !important;
 }
 
 pre {
@@ -188,8 +188,8 @@ code {
 }
 
 pre > code {
+    padding: 1em;
     display: inline-block;
-    margin: 1rem 1rem 0.75rem 1rem;
 }
 
 p, ul, ol, dl, pre {
