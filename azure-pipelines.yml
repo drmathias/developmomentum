@@ -4,190 +4,190 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: "windows-latest"
 
 variables:
   ARTIFACT_NAME: DevelopMomentumWeb
 
 stages:
-- stage: Build
-  displayName: Build
+  - stage: Build
+    displayName: Build
 
-  jobs:
-  - job: Transform
-    displayName: Transform Input
+    jobs:
+      - job: Transform
+        displayName: Transform Input
 
-    variables:
-      project: 'src/Blog.csproj'
-      buildConfiguration: 'Release'
+        variables:
+          project: "src/Blog.csproj"
+          buildConfiguration: "Release"
 
-    steps:
-    - task: replacetokens@3
-      displayName: 'Replace Variables'
-      inputs:
-        targetFiles: |
-          src/input/**/*.html
-          src/input/**/*.cshtml
-          src/input/**/*.md
-          src/input/**/*.yml
-          src/input/**/*.json
-        encoding: 'auto'
-        writeBOM: true
-        actionOnMissing: 'warn'
-        keepToken: true
-        tokenPrefix: '#{'
-        tokenSuffix: '}#'
-        useLegacyPattern: false
-        enableTelemetry: false
-  
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: 'restore'
-        projects: $(project)
-
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        command: 'build'
-        projects: '$(project)'
-        arguments: '--configuration $(buildConfiguration)'
-        workingDirectory: 'src'
-
-    - task: DotNetCoreCLI@2
-      displayName: Generate
-      inputs:
-        command: 'run'
-        projects: '$(project)'
-        arguments: '--configuration $(buildConfiguration)'
-        workingDirectory: 'src'
-
-    - task: CopyFiles@2
-      displayName: Copy
-      inputs:
-        SourceFolder: '$(Build.SourcesDirectory)/src/output'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
-
-    - task: PublishPipelineArtifact@1
-      displayName: Share
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/output'
-        artifact: '$(ARTIFACT_NAME)'
-        publishLocation: 'pipeline'
-      
-- stage: Staging
-  displayName: Staging
-  dependsOn: Build
-  condition: succeeded()
-
-  jobs:
-  - deployment: DeployToSkynet
-    displayName: Deploy to Sia Skynet
-    environment: developmomentum-staging
-    
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - task: Sia-Skynet-Upload@0
-              displayName: 'Upload to https://skynet.developmomentum.com'
-              name: website_upload
-              inputs:
-                portal: 'https://skynet.developmomentum.com'
-                path: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)'
-
-            - powershell: |
-                New-Item -Path $(Pipeline.Workspace) -Name variables -ItemType directory
-                Write-Output $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
-              displayName: Write to File
-
-            - publish: $(Pipeline.Workspace)/variables
-              artifact: variables
-              displayName: Share
-
-- stage: Release
-  displayName: Release
-  dependsOn: Staging
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-
-  jobs:
-  - deployment: DeployToStorage
-    displayName: Deploy to Azure Storage
-    environment: developmomentum-production
-
-    variables:
-      AZURE_STORAGE_ACCOUNT: developmomentum
-
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureCLI@2
-            displayName: 'Delete Existing Files'
+        steps:
+          - task: replacetokens@3
+            displayName: "Replace Variables"
             inputs:
-              azureSubscription: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
-              scriptType: 'pscore'
-              scriptLocation: 'inlineScript'
-              inlineScript: 'az storage blob delete-batch -s `$web --account-name $(AZURE_STORAGE_ACCOUNT) --auth-mode login'
+              targetFiles: |
+                src/input/**/*.html
+                src/input/**/*.cshtml
+                src/input/**/*.md
+                src/input/**/*.yml
+                src/input/**/*.json
+              encoding: "auto"
+              writeBOM: true
+              actionOnMissing: "warn"
+              keepToken: true
+              tokenPrefix: "#{"
+              tokenSuffix: "}#"
+              useLegacyPattern: false
+              enableTelemetry: false
 
-          - script: reg add HKCR\.js /v "Content Type" /d application/javascript /f
-            displayName: Add .js content type to registry
-
-          - task: AzureFileCopy@4
-            displayName: 'Copy Files to Storage'
+          - task: DotNetCoreCLI@2
+            displayName: Restore
             inputs:
-              azureSubscription: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
-              SourcePath: '$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*'
-              Destination: 'AzureBlob'
-              storage: '$(AZURE_STORAGE_ACCOUNT)'
-              ContainerName: '$web'
+              command: "restore"
+              projects: $(project)
 
-        routeTraffic:
-          steps:
-          - task: PurgeAzureCDNEndpoint@2
-            displayName: 'Purge Azure CDN Endpoint'
+          - task: DotNetCoreCLI@2
+            displayName: Build
             inputs:
-              ConnectedServiceNameSelector: ConnectedServiceNameARM
-              ConnectedServiceNameARM: 'Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)'
-              ResourceGroupName: developmomentum
-              EndpointName: developmomentum
-              ProfileName: developmomentum
-            continueOnError: true
+              command: "build"
+              projects: "$(project)"
+              arguments: "--configuration $(buildConfiguration)"
+              workingDirectory: "src"
 
-          - task: tfx-cloudflare-purge@1
-            displayName: 'Purge Cloudflare Cache'
+          - task: DotNetCoreCLI@2
+            displayName: Generate
             inputs:
-              username: 'adamshirt@outlook.com'
-              apikey: '$(CLOUDFLARE_API_KEY)'
-              zonename: developmomentum.com
-            continueOnError: true
+              command: "run"
+              projects: "$(project)"
+              arguments: "--configuration $(buildConfiguration)"
+              workingDirectory: "src"
 
-  - job: PublishToSkynet
-    displayName: Publish to Sia Skynet
-    
-    steps:
-      - download: current
-        artifact: variables
-        displayName: 'Retrieve Variables'
+          - task: CopyFiles@2
+            displayName: Copy
+            inputs:
+              SourceFolder: "$(Build.SourcesDirectory)/src/output"
+              Contents: "**"
+              TargetFolder: "$(Build.ArtifactStagingDirectory)/output"
 
-      - powershell: |
-          $skylink = Get-Content $(Pipeline.Workspace)/variables/skylink
-          Write-Output "##vso[task.setvariable variable=skylink]$skylink"
-        displayName: 'Populate Variable'
+          - task: PublishPipelineArtifact@1
+            displayName: Share
+            inputs:
+              targetPath: "$(Build.ArtifactStagingDirectory)/output"
+              artifact: "$(ARTIFACT_NAME)"
+              publishLocation: "pipeline"
 
-      - task: GitHubRelease@1
-        displayName: 'Tag'
-        inputs:
-          gitHubConnection: 'github.com_drmathias'
-          repositoryName: 'drmathias/developmomentum'
-          action: 'create'
-          target: '$(Build.SourceVersion)'
-          tagSource: 'userSpecifiedTag'
-          tag: '$(Build.BuildNumber)'
-          releaseNotesSource: 'inline'
-          releaseNotesInline: 'sia://$(skylink)'
-          addChangeLog: false
+  - stage: Staging
+    displayName: Staging
+    dependsOn: Build
+    condition: succeeded()
+
+    jobs:
+      - deployment: DeployToSkynet
+        displayName: Deploy to Sia Skynet
+        environment: developmomentum-staging
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Sia-Skynet-Upload@0
+                  displayName: "Upload to https://skynetfree.net"
+                  name: website_upload
+                  inputs:
+                    portal: "https://skynetfree.net"
+                    path: "$(Pipeline.Workspace)/$(ARTIFACT_NAME)"
+
+                - powershell: |
+                    New-Item -Path $(Pipeline.Workspace) -Name variables -ItemType directory
+                    Write-Output $(website_upload.skylink) > $(Pipeline.Workspace)/variables/skylink
+                  displayName: Write to File
+
+                - publish: $(Pipeline.Workspace)/variables
+                  artifact: variables
+                  displayName: Share
+
+  - stage: Release
+    displayName: Release
+    dependsOn: Staging
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+    jobs:
+      - deployment: DeployToStorage
+        displayName: Deploy to Azure Storage
+        environment: developmomentum-production
+
+        variables:
+          AZURE_STORAGE_ACCOUNT: developmomentum
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: "Delete Existing Files"
+                  inputs:
+                    azureSubscription: "Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)"
+                    scriptType: "pscore"
+                    scriptLocation: "inlineScript"
+                    inlineScript: "az storage blob delete-batch -s `$web --account-name $(AZURE_STORAGE_ACCOUNT) --auth-mode login"
+
+                - script: reg add HKCR\.js /v "Content Type" /d application/javascript /f
+                  displayName: Add .js content type to registry
+
+                - task: AzureFileCopy@4
+                  displayName: "Copy Files to Storage"
+                  inputs:
+                    azureSubscription: "Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)"
+                    SourcePath: "$(Pipeline.Workspace)/$(ARTIFACT_NAME)/*"
+                    Destination: "AzureBlob"
+                    storage: "$(AZURE_STORAGE_ACCOUNT)"
+                    ContainerName: "$web"
+
+            routeTraffic:
+              steps:
+                - task: PurgeAzureCDNEndpoint@2
+                  displayName: "Purge Azure CDN Endpoint"
+                  inputs:
+                    ConnectedServiceNameSelector: ConnectedServiceNameARM
+                    ConnectedServiceNameARM: "Pay-As-You-Go (8df2aaab-fa1b-4031-9a60-43ebee006b38)"
+                    ResourceGroupName: developmomentum
+                    EndpointName: developmomentum
+                    ProfileName: developmomentum
+                  continueOnError: true
+
+                - task: tfx-cloudflare-purge@1
+                  displayName: "Purge Cloudflare Cache"
+                  inputs:
+                    username: "adamshirt@outlook.com"
+                    apikey: "$(CLOUDFLARE_API_KEY)"
+                    zonename: developmomentum.com
+                  continueOnError: true
+
+      - job: PublishToSkynet
+        displayName: Publish to Sia Skynet
+
+        steps:
+          - download: current
+            artifact: variables
+            displayName: "Retrieve Variables"
+
+          - powershell: |
+              $skylink = Get-Content $(Pipeline.Workspace)/variables/skylink
+              Write-Output "##vso[task.setvariable variable=skylink]$skylink"
+            displayName: "Populate Variable"
+
+          - task: GitHubRelease@1
+            displayName: "Tag"
+            inputs:
+              gitHubConnection: "github.com_drmathias"
+              repositoryName: "drmathias/developmomentum"
+              action: "create"
+              target: "$(Build.SourceVersion)"
+              tagSource: "userSpecifiedTag"
+              tag: "$(Build.BuildNumber)"
+              releaseNotesSource: "inline"
+              releaseNotesInline: "sia://$(skylink)"
+              addChangeLog: false

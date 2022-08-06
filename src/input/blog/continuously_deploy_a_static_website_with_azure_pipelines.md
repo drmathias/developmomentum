@@ -4,7 +4,9 @@ Description: With multi-stage pipelines now officially released, Azure pipelines
 Thumbnail: a1ee6dcf-55ef-43cd-ae05-682d2e28e932
 Published: 2020-06-05
 Updated: 2020-06-05
+
 ---
+
 ![Multi-stage pipelines](../assets/images/blog/a1ee6dcf-55ef-43cd-ae05-682d2e28e932-w1920-h1440.jpg)
 
 ## Introducing CI/CD
@@ -15,7 +17,7 @@ Deploying applications can be a tedious task, with people historically having to
 
 ### Step by step
 
-To begin, we need to break down the deployment process step by step. This makes it clear exactly what you need to do and in what order. Sometimes deployments require one step, while others can require tens of steps. Combined, all the steps will make up a pipeline. 
+To begin, we need to break down the deployment process step by step. This makes it clear exactly what you need to do and in what order. Sometimes deployments require one step, while others can require tens of steps. Combined, all the steps will make up a pipeline.
 
 ### For a static website
 
@@ -57,7 +59,7 @@ For a static website, we want to take the code in our source control repository,
 
 ### Setting up the pipeline
 
-If you do not have one already, create an [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/#DevOps) organisation and project. 
+If you do not have one already, create an [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/) organisation and project.
 Navigate to the _Pipelines_ tab in your Azure DevOps project, then select _New pipeline_.
 
 ![New pipeline wizard](../assets/images/blog/content/b4e772a3-effb-4a5d-82d9-db9596ccfe51.png)
@@ -72,29 +74,29 @@ You may notice that the template contains definitions for steps, but not stages 
 
 ```yaml
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: "windows-latest"
 
 variables:
   ARTIFACT_NAME: DevelopMomentumWeb
 
 stages:
-- stage: Build
-  displayName: Build
+  - stage: Build
+    displayName: Build
 
-  jobs:
-  - job: Transform
-    displayName: Transform Input
+    jobs:
+      - job: Transform
+        displayName: Transform Input
 
-- stage: Release
-  displayName: Release
-  dependsOn: Build
+  - stage: Release
+    displayName: Release
+    dependsOn: Build
 
-  jobs:
-  - deployment: DeployToStorage
-    displayName: Deploy to Azure Storage
+    jobs:
+      - deployment: DeployToStorage
+        displayName: Deploy to Azure Storage
 ```
 
 Stages will run in parallel, unless they are defined as having a dependency on another stage. You are able to define conditions for each stage to run. The default condition is that their dependant stages completed successfully.
@@ -110,28 +112,28 @@ In this example, I'll be building a static website using .NET Core and Statiq, t
   displayName: Transform Input
 
   variables:
-    project: 'src/Blog.csproj'
+    project: "src/Blog.csproj"
 
   steps:
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: 'restore'
-      projects: $(project)
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: "restore"
+        projects: $(project)
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      command: 'build'
-      projects: $(project)
-      workingDirectory: 'src'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: "build"
+        projects: $(project)
+        workingDirectory: "src"
 
-  - task: DotNetCoreCLI@2
-    displayName: Generate
-    inputs:
-      command: 'run'
-      projects: $(project)
-      workingDirectory: 'src'
+    - task: DotNetCoreCLI@2
+      displayName: Generate
+      inputs:
+        command: "run"
+        projects: $(project)
+        workingDirectory: "src"
 ```
 
 Now we need to publish the artifact, which is the output folder that Statiq generates. Generally, artifacts should be staged before being published, which involves copying them to the `\a` directory. You should do this with the `CopyFiles` task, which takes the source and target folders as parameters. Publishing artifacts can be done with either the `PublishBuildArtifacts` or `PublishPipelineArtifact` task, yet it is recommended to use pipeline artifacts, as they are intended as a replacement to build artifacts.
@@ -140,41 +142,41 @@ Now we need to publish the artifact, which is the output folder that Statiq gene
 - task: CopyFiles@2
   displayName: Copy
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/src/output'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/output'
+    SourceFolder: "$(Build.SourcesDirectory)/src/output"
+    Contents: "**"
+    TargetFolder: "$(Build.ArtifactStagingDirectory)/output"
 
 - task: PublishPipelineArtifact@1
   displayName: Share
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/output'
-    artifact: '$(ARTIFACT_NAME)'
-    publishLocation: 'pipeline'
+    targetPath: "$(Build.ArtifactStagingDirectory)/output"
+    artifact: "$(ARTIFACT_NAME)"
+    publishLocation: "pipeline"
 ```
 
 ### The Release stage
 
-The build stage is now defined and so we can look at the release stage. We've defined a deployment job, which is currently missing an environment and a strategy. 
+The build stage is now defined and so we can look at the release stage. We've defined a deployment job, which is currently missing an environment and a strategy.
 
 Multiple environments can be useful when creating responsive, large-scale applications, though in this case we do not have to worry about them. We just want a single empty environment, which we can get by providing any environment name.
 
 To finish, we need to define the deployment strategy, which is a process that can contain the following hooks:
 
-* `preDeploy` - used for resource initialisation
-* `deploy` - performs the actual deployment
-* `routeTraffic` - configuration to serve updated version
-* `postRouteTraffic` - meant for health monitoring / user notifications
-* `on: failure` - to perform rollbacks
-* `on: success` - meant for clean up
+- `preDeploy` - used for resource initialisation
+- `deploy` - performs the actual deployment
+- `routeTraffic` - configuration to serve updated version
+- `postRouteTraffic` - meant for health monitoring / user notifications
+- `on: failure` - to perform rollbacks
+- `on: success` - meant for clean up
 
 There are three different deployment strategies, though the only one you need to be concerned about is `runOnce`. This strategy is the simplest of the three, as it runs each stage of deployment one time per build.
 
 ```yaml
-  jobs:
+jobs:
   - deployment: DeployToStorage
     displayName: Deploy to Azure Storage
     environment: developmomentum-production
-    
+
     strategy:
       runOnce:
 ```
@@ -184,7 +186,7 @@ In my example case, the website needs to be deployed to Azure Storage, which inv
 ```yaml
 variables:
   AZURE_STORAGE_ACCOUNT: developmomentum
-    
+
 strategy:
   runOnce:
     deploy:
@@ -208,7 +210,7 @@ strategy:
           Destination: 'AzureBlob'
           storage: '$(AZURE_STORAGE_ACCOUNT)'
           ContainerName: '$web'
-            
+
     routeTraffic:
       steps:
         - task: PurgeAzureCDNEndpoint@2

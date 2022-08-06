@@ -4,7 +4,9 @@ Description: The web is currently centralised, with large corporations controlli
 Thumbnail: 9aeea0d6-737c-4be8-8b63-5ec38cbf394b
 Published: 2020-04-05
 Updated: 2020-04-05
+
 ---
+
 ![Distributed network](../assets/images/blog/9aeea0d6-737c-4be8-8b63-5ec38cbf394b-w1920-h1440.jpg)
 
 ## Distribution of content
@@ -52,21 +54,23 @@ Hosting static websites on Skynet comes with its own challenges. Firstly, Skylin
 There are ways to deal with this. One solution would be to create an endpoint that returns the latest Skylink. This could be resolved by a HTML page containing a JavaScript function, or a serverless function run by your DNS provider.
 
 ```javascript
-fetch('https://www.example.com/resolve/skylink')
-    .then(request => {
-        if(request.status !== 200) {
-          // handle error
-          return;
-        }
-        
-        request.text()
-          .then(skylink => {
-            const url = 'https://skynet.developmomentum.com/'.concat(skylink).concat('/index.html');
-            window.location.replace(url);
-          });
-    }).catch(error => {
-        // handle error
+fetch("https://www.example.com/resolve/skylink")
+  .then((request) => {
+    if (request.status !== 200) {
+      // handle error
+      return;
+    }
+
+    request.text().then((skylink) => {
+      const url = "https://skynetfree.net/"
+        .concat(skylink)
+        .concat("/index.html");
+      window.location.replace(url);
     });
+  })
+  .catch((error) => {
+    // handle error
+  });
 ```
 
 Another difficulty you will face is correctly defining links. Any root-relative links will not work when accessing your site through a portal, therefore it is important to replace these with relative links instead. This can be quite a challenge, since you will likely be using a static generator to generate your website. Links must also include the full file name, as Skynet does not recognise default file names.

@@ -1,2 +1,2 @@
 Analyzers:
- - ValidateAbsoluteLinks=Error
+ - ValidateAbsoluteLinks=Warning
